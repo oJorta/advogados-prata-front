@@ -1,0 +1,90 @@
+.headerContainer {
+    padding: 1rem 1rem 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.headerContainer * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.officeInfo {
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.headerContainer nav {
+    display: flex;
+    justify-content: center;
+    flex: 1; /* Adicione esta linha para permitir que a barra de navegação se expanda */
+}
+
+.navList {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+
+.navItem {
+    text-decoration: none;
+    list-style: none;
+    transition: 0.2s;
+}
+
+.navItem:hover {
+    scale: 1.05;
+    border-bottom: 3px solid #0000006f;
+    transition: 0.2s;
+}
+
+.navItem a {
+    color: #000000b1;
+    text-decoration: none;
+}
+
+.active a{
+    color: #000;
+    border-bottom: 3px solid #000;
+}
+
+.userAndExit {
+    min-width: 231px;
+    text-wrap: nowrap;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.exitButton {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    border: none;
+    padding: .2rem .4rem;
+    border-radius: 3px;
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.exitButton:hover {
+    color: #fff;
+    background-color: #d11a2a;
+    transition: 0.3s;
+}
+
+.exitIcon {
+    width: 1.8rem;
+    height: auto;
+}

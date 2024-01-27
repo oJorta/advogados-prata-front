@@ -1,0 +1,74 @@
+.container{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 3rem;
+    margin-top: 2rem;
+    color: var(--color-primary);
+}
+
+.container>hr{
+    margin-top: .2rem;
+    width: 100%;
+    height: 0.25rem;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--border-rounded);
+}
+
+.contentWrapper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.contentWrapper h1 {
+    line-height: 2rem;
+    margin: 0 0 0rem 1rem;
+}
+
+.navbar{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: end;
+    margin-right: 1rem;
+    gap: 2rem;
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin: 0;
+    line-height: 2rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.linkProcessHeader{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    font-size: var(--text-md);
+    font-weight: var(--text-weight-bold);
+    color: var(--color-black);
+    text-decoration: none;
+}
+
+.iconProcessHeader{
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--color-primary);
+}

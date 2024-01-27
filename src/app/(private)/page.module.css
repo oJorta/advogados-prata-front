@@ -1,0 +1,45 @@
+.container {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.iconLinkHub{
+    width: 12rem;
+    height: 12rem;
+    color: var(--color-primary);
+    transition: var( --transition-zoomIn);
+}
+
+.iconLinkHub:hover{
+    transform: scale(1.1);
+}
+
+.wrapper {
+    width: 100%;
+    max-width: var(--max-width);
+    height: 100vh;
+    padding: 4rem 0 2rem 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 4rem);
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: .5rem;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: inherit;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    color: var(--color-primary);
+}

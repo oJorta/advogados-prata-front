@@ -1,0 +1,112 @@
+.sentContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.sentContainer hr {
+    width: 100%;
+}
+
+.receivedContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sentContainer * {
+    margin: 0;
+}
+
+.receivedContainer * {
+    margin: 0;
+}
+
+.sentContainer button,
+.receivedContainer button {
+    background: none;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: #000;
+    cursor: pointer;
+}
+
+.sentContainer button:hover,
+.receivedContainer button:hover {
+    text-decoration: underline;
+}
+
+.receivedMessageContainer,
+.sentMessageContainer,
+.informationMessageContainer{
+    width: fit-content;
+    max-width: 60%;
+    padding: .5rem 1rem;
+    overflow-wrap: break-word;
+    line-break: anywhere;
+    line-height: 1.5rem;
+}
+
+.receivedMessageContainer {
+    border-radius: 10px 10px 10px 0px;
+    background-color: var(--bg-gray);
+}
+
+.sentMessageContainer {
+    border-radius: 10px 10px 0px 10px;
+    background-color: #C4D7FB;
+}
+
+.sentDocumentContainer,
+.receivedDocumentContainer {
+    width: fit-content;
+    max-width: 60%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: .5rem;
+    padding: .5rem 1rem;
+}
+
+.sentDocumentContainer {
+    border-radius: 10px 10px 0px 10px;
+    background-color: #C4D7FB;
+}
+
+.receivedDocumentContainer {
+    border-radius: 10px 10px 10px 0px;
+    background-color: var(--bg-gray);
+}
+
+.documentContainer svg {
+    width: 1.5rem;
+    height: auto;
+}
+
+.informationContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.informationContainer * {
+    margin: 0 auto;
+}
+
+.informationMessageContainer {
+    width: 100%;
+    border-radius: 10px;
+    background-color: var(--bg-gray);
+    text-align: justify;
+    line-break: anywhere;
+}
+
+.informationContainer hr {
+    margin-top: 1rem;
+    width: 100%;
+}

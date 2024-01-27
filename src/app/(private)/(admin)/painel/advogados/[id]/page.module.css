@@ -1,0 +1,419 @@
+.container {
+    margin: 0 auto;
+    width: 80%;
+    /* height: 100%; */
+    height: calc(100vh - 12.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.container img {
+    width: 10rem;
+    height: auto;
+}
+
+.userAndProcesses {
+    padding-top: 2rem;
+    width: 100%;
+    display: flex;
+    gap: 4rem;
+}
+
+.sideInputs {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    padding-right: 1rem;
+}
+
+.sideInputs * {
+    margin: 0;
+}
+
+.sideInputs div:nth-child(1),
+.sideInputs div:nth-child(5) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 2rem;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+.formContainer small {
+    margin: 0;
+}
+
+.nameInput {
+    width: 100%;
+    padding: .5rem;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.editIcon {
+    width: 4rem;
+    height: auto;
+    cursor: pointer;
+}
+  
+.formlabel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    border-bottom: 3px solid var(--color-primary);
+    font-weight: bold;
+}
+
+.formlabel input {
+    width: max-content;
+    text-align: end;
+    border: none;
+    background-color: none;
+    margin: 0;
+}
+
+.formlabel input:focus {
+    outline: none;    
+}
+  
+.formInput {
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.checkboxes {
+    /* display: flex;
+    gap: 1rem;
+    align-items: flex-start; */
+    font-weight: bold;
+    user-select: none;
+    overflow: scroll;
+}
+
+/* .checkboxes div {
+    width: 20rem;
+    height: 2.5rem;
+    padding-top: .5rem;
+    display: flex;
+    justify-content: space-between;
+    overflow-y: hidden;
+    overflow-x: scroll;
+} */
+
+.checkboxes label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    text-wrap: nowrap;
+}
+
+.checkboxes input {
+    width: 1rem;
+    height: 1rem;
+}
+
+.roleSelection {
+    width: 100%;
+    font-weight: bold;
+    user-select: none;
+    border-bottom: 3px solid var(--color-primary);
+}
+
+.roleSelection div {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: 500;
+}
+
+.roleSelection label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.roleSelection input {
+    width: 1rem;
+    height: 1rem;
+}
+
+  
+.submit[type="submit"] {
+    width: 100%;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    background-color: var(--color-secondary);
+    transition: 0.3s;
+    animation: appear .2s linear;
+}
+
+.submit[type="submit"]:hover {
+    background-color: var(--color-primary);
+    transition: 0.3s;
+}
+
+.dropdownContainer {
+    position: relative;
+    width: 70%;
+    padding: .3rem .5rem;
+    border: 2px solid var(--color-primary);
+    border-radius: 5px;
+    /* background-color: var(--bg-apWhite); */
+    background-color: #fff;
+    z-index: 1;
+}
+
+.dropdownContainer * {
+    font-family: inherit;
+}
+
+.dropdownContainer input {
+    width: 100%;
+    padding: .2rem;
+    border: none;
+    outline: none;
+    /* background-color: var(--bg-apWhite); */
+    background-color: #fff;
+    line-height: 1rem;
+}
+
+.dropdownBar button {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.dropdownList {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 15rem;
+    top: 2.1rem;
+    left: 0;
+    background-color: #fff;
+    border: 2px solid var(--color-primary);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    overflow-y: scroll;
+    z-index: 2;
+}
+
+.dropdownList label {
+    padding: .2rem .5rem;
+}
+
+.dropdownList label:hover {
+    background-color: var(--bg-apWhite);
+}
+
+.affinityContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.affinityContainer input{
+    width: 100%;
+}
+
+.affinityContainer p {
+    width: 12rem;
+    text-align: end;
+    text-wrap: nowrap;
+}
+
+.categoryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.confirmExcludeBtn {
+    display: flex;
+    align-items: center;
+    height: auto;
+    gap: .5rem;
+    font-size: .8rem;
+    color: var(--color-primary);
+    background: none;
+    padding: .1rem .3rem;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.confirmExcludeBtn:hover{
+    display: flex;
+    align-items: center;
+    height: auto;
+    gap: .5rem;
+    font-size: .8rem;
+    color: white;
+    background-color: #D11A2A;
+    padding: .1rem .3rem;
+    border-radius: 3px;
+    border: 2px solid var(--color-primary);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modalWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.53);
+    cursor: default;
+}
+
+.modalContainer {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 35rem;
+    border-radius: 8px;
+    padding: 1.5rem 4rem;
+    background-color: white;
+    border: 2px solid #000040;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    animation: appear 0.3s ease;
+}
+
+.modalContainer header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modalContainer header svg {
+    cursor: pointer;
+}
+
+.warning {
+    text-align: justify;
+    line-height: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.options {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.options button {
+    padding: 0rem 3rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #000040;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.yesBtn:hover {
+    background-color: var(--color-secondary);
+}
+
+.noBtn:hover {
+    background-color: #D2042D;
+}
+
+.processesContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tableSelection {
+    margin-top: 1rem;
+    /* padding: 0 4rem; */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.tableSelection h3 {
+    cursor: pointer;
+}
+
+.tableContainer {
+    width: 100%;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.spinnerWrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--color-primary);
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    animation: spin 1s ease-in-out infinite;
+    z-index: 10000;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

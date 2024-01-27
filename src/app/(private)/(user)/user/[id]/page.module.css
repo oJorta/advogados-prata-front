@@ -1,0 +1,112 @@
+.backgroundNewProcess{
+    margin: 2rem auto;
+    padding: 2rem;
+    width: var(--container-form);
+    height: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    animation: var(--animation-appear);
+}
+
+.modal{
+    display: flex;
+    width: 100%;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+}
+
+.formContainer{
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--color-approxWhite);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-outside);
+}
+
+.labelInput{
+    position: relative;
+    width: 100%;
+    height: 2.25rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.labelInput>span{
+    width: 10rem;
+    font-size: var(--text-md);
+}
+
+.labelInput input, .labelInput textarea, .labelInput select{
+    background: none;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding-left: 0.5rem;
+    border-radius: var(--border-radius-input);
+    border: 0.025rem solid var(--bg-gray);
+    color: var(--color-gray10);
+    background-color: var(--input-bg-white);
+    font-size: var(--text-md);
+    box-shadow: var(--box-shadow-input);
+}
+
+.labelInput:nth-child(4){
+    height: 8rem;
+}
+
+.labelInput textarea{
+    padding-top: 0.5rem;
+    resize: none;
+}
+
+.labelInput input::placeholder, .labelInput textarea::placeholder{
+    color: var(--bg-white);
+    font-size: var(--text-md);
+}
+
+.labelInput select{
+    width: 60%;
+}
+
+.labelInputFile{
+    width: 80%;
+    height: 4rem;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--bg-gray);
+    border: dashed 0.125rem var(--color-gray10);
+    border-radius: var(--border-radius);
+}
+
+.labelInputFile svg{
+    width: 2rem;
+    height: 2rem;
+}
+
+.labelInputFile input{
+    display: none;
+}
+
+.labelInputBtn{
+    width: 12rem;
+    height: 2rem;
+    border-radius: var(--border-radius-btn);
+    border: none;
+    color: var(--color-approxWhite);
+    background-color: var(--color-gray20);
+}

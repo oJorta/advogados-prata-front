@@ -1,0 +1,134 @@
+.container {
+    margin: 0 auto;
+    width: 80%;
+    /* height: 100%; */
+    height: calc(100vh - 12.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.infoContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 8px;
+    padding-top: 1rem;
+}
+
+.infoItem {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    border-bottom: 3px solid var(--color-primary);
+    font-weight: bold;
+}
+
+.infoItem p {
+    width: max-content;
+    text-align: end;
+    border: none;
+    background-color: none;
+    margin: 0;
+    font-weight: normal;
+}
+
+.infoItemObs {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    gap: 4px;
+    border-bottom: 3px solid var(--color-primary);
+    font-weight: bold;
+}
+
+.infoItemObs div {
+    max-width: 70%;
+    display: flex;
+    overflow-wrap: break-word;
+    line-break: anywhere;
+    text-align: justify;
+
+}
+
+.infoItemObs p {
+    width: max-content;
+    border: none;
+    background-color: none;
+    margin: 0;
+    font-weight: normal;
+}
+
+.filesContainer {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+}
+
+.file {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background-color: #F2F2F2;
+    padding: .5rem 1rem;  
+    margin-bottom: .5rem;
+    border-radius: 10px;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.file:hover {
+    background-color: #E6E6E6;
+    transition: 0.3s;
+}
+
+.file svg {
+    width: 1rem;
+    height: auto;
+}
+
+.spinnerWrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--color-primary);
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    animation: spin 1s ease-in-out infinite;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

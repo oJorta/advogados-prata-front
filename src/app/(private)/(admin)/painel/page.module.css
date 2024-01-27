@@ -1,0 +1,104 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 8rem);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    background-color: transparent;
+}
+
+.optionsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22rem;
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    border: 0.5rem solid var(--color-darkBlue);
+    gap: 2rem;
+}
+.optionsContainer>div{
+    border: 0.3rem solid var(--color-darkBlue);
+    height: 22rem;
+    background-color: var(--color-darkBlue);
+}
+/* width: 100%;
+height: calc(100vh - 8.5rem);
+overflow-y: scroll;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+overflow-x: hidden;
+background-color: transparent; */
+
+/* .containerSection{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 22rem;
+    width: var(--lg);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    border: 0.5rem solid var(--color-darkBlue);
+    gap: 2rem;
+}
+*/
+
+
+.labelHub{
+    width: 33,33%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: var(--text-lg);
+    transition: var( --transition-zoomIn);
+    color: var(--color-darkBlue);
+}
+
+.spanMiddle{
+    font-size: var(--text-lg);
+    color: var(--color-bondiBlue);
+}
+
+.iconLinkHub{
+    width: 12rem;
+    height: auto;
+    color: var(--color-darkBlue);
+}
+
+.iconLinkHubMiddle{
+    width: 12rem;
+    height: auto;
+    color: var(--color-bondiBlue);
+}
+
+.labelHub:hover{
+    transform: scale(1.1);
+}
+
+.wrapper {
+    width: 100%;
+    max-width: var(--max-width);
+    height: 100vh;
+    padding-top: 4rem;
+}
+
+.contentWrapper {
+    display: flex;
+    align-items: center;
+    height: calc(100% - 4rem);
+}
+
+.wrapperWithHeader {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 4rem);
+}

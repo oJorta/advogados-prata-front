@@ -1,0 +1,91 @@
+.container {
+    width: 100%;
+    /* height: 100%; */
+    height: calc(100vh - 12.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.chatContainer {
+    position: relative;
+    margin: 0 auto;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.optionsContainer {
+    position: relative;
+    width: 80%;
+    height: 3.5rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.newMessageBtn {
+    /* margin: 0 auto; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    padding: .5rem 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: inherit;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: var(--color-primary);
+}
+
+
+.conclusionBtn {
+    /* margin: 0 auto; */
+    width: fit-content;
+    height: fit-content;
+    padding: 0rem .5rem;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: inherit;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: var(--color-secondary);
+}
+
+.optionsContainer button:hover {
+    cursor: pointer;
+}
+
+.optionsContainer button:disabled {
+    opacity: 0.5;
+}
+
+.optionsContainer button:disabled:hover {
+    cursor: not-allowed;
+}
+
+.conclusionContainer {
+    position: absolute;
+    bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--bg-apWhite);
+    border-radius: 8px;
+    padding: 1rem;
+}

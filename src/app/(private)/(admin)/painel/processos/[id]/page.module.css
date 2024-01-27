@@ -1,0 +1,169 @@
+.backgroundNewProcess{
+    margin: auto;
+    padding: 2rem;
+    width: var(--container-form);
+    height: auto;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    animation: var(--animation-appear);
+}
+
+.modal{
+    display: flex;
+    width: 100%;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+}
+
+.formContainer{
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-approxWhite);
+    border: solid 0.125rem var(--color-darkBlue);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-outside);
+}
+
+.labelInput{
+    position: relative;
+    width: 100%;
+    height: 2.25rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.labelInput span{
+    width: 10rem;
+    font-size: var(--text-md);
+}
+
+.labelInput input, .labelInput textarea, .labelInput select{
+    background: none;
+    outline: none;
+    border: none;
+    width: 80%;
+    height: 100%;
+    padding-left: 0.5rem;
+    border-radius: var(--border-radius-input);
+    border: 0.025rem solid var(--bg-gray);
+    color: var(--color-gray10);
+    background-color: var(--input-bg-white);
+    font-size: var(--text-md);
+    box-shadow: var(--box-shadow-input);
+}
+
+.labelInput:nth-child(6){
+    height: 8rem;
+}
+
+.labelInput:nth-child(7), .labelInput:nth-child(8){
+    justify-content: flex-start;
+}
+
+.labelInput:nth-child(7) span, .labelInput:nth-child(8) span{
+    width: 10rem;
+    text-align: start;
+}
+
+.labelInput textarea{
+    padding-top: 0.5rem;
+    resize: none;
+}
+
+.labelInput input::placeholder, .labelInput textarea::placeholder{
+    color: var(--bg-white);
+    font-size: var(--text-md);
+}
+
+.labelInput select{
+    width: 60%;
+}
+
+.containerCheckboxStatus{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.containerCheckboxDocument{
+    padding-left: 10rem;
+    padding-right: 4rem;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.labelCheckbox{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.labelCheckbox input{
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0.2rem;
+    border-radius: var(--border-radius);
+}
+
+.labelInputFile{
+    position: relative;
+    width: 80%;
+    height: 4rem;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--bg-gray);
+    border: dashed 0.125rem var(--color-gray10);
+    border-radius: var(--border-radius);
+}
+
+.labelInputFile svg{
+    width: 2rem;
+    height: 2rem;
+}
+
+.labelInputFile input{
+    display: none;
+}
+
+.countFiles{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -0.8rem;
+    right: 3rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background-color: var(--color-approxFreeSpeechRed);
+    color: var(--color-approxWhite);
+}
+
+.labelInputBtn{
+    width: 12rem;
+    height: 2rem;
+    border-radius: var(--border-radius-btn);
+    border: none;
+    color: var(--color-approxWhite);
+    background-color: var(--color-gray20);
+}
