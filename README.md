@@ -1,16 +1,12 @@
 <span id="topo"></span>
 
-# Projeto R&R Advogados (Front End)
+# Protótipo Sistema de Advocacia (Front End)
 
 ## 🚀 Tecnologias
-
-Os projetos em React deverão ser desenvolvidos utilizando as seguintes tecnologias:
 
 -   [Next](https://nextjs.org/)
 -   [React icons](https://react-icons.github.io/react-icons/)
 -   [TypeScript](https://www.typescriptlang.org/)
-
-Em casos específicos, poderão ser utilizadas outras tecnologias, desde que aprovadas pelo time de desenvolvimento.
 
 ---
 
@@ -110,7 +106,6 @@ Cada projeto deve ter um README.md com as informações necessárias para que qu
 
 ## 👤 Autor
 
--   [**Igor Rocha**](https://ilrocha.com)
--   **Valcirio**
+-   [**João Pedro**](https://github.com/oJorta)
 
 [⬆️ Voltar ao topo](#topo)
