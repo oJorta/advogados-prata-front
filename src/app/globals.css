@@ -215,7 +215,7 @@ body{
   background-color: var(--color-approxWhite);
 }
 
-table {
+/* table {
   width: 90%;
   height: 100%;
   background-color: var(--color-approxWhite);
@@ -278,3 +278,4 @@ th:last-child {
   width: 80%;
 }
 
+ */
