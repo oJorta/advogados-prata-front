@@ -131,7 +131,8 @@ export default function Processo() {
                         <button
                             onClick={() => { setConclusionModalIsOpen(!conclusionModalIsOpen) }}
                             className={styles.conclusionBtn}
-                            disabled={process.status === 'Concluído' || (isAdmin && revisionRequests.length === 0)}
+                            disabled={process.status === 'Concluído'}
+                            /* disabled={process.status === 'Concluído' || (isAdmin && revisionRequests.length === 0)} */
                         >
                             CONCLUIR PROCESSO
                         </button>
