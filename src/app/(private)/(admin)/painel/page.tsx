@@ -9,8 +9,10 @@ import axios from 'axios'
 import styles from './page.module.css'
 
 import { AiFillBell , AiOutlineComment } from 'react-icons/ai'
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 
 import { monthlyProcessReport } from '@/types/monthlyReport'
+import toast from 'react-hot-toast'
 
 export default function Hub(){
     const { push } = useRouter()
@@ -18,6 +20,7 @@ export default function Hub(){
     const [process, setProcess] = useState<processProps[]>([])
     const [nearDeadlineProcesses, setNearDeadlineProcesses] = useState<processProps[]>([])
     const [recentlyConcludedProcesses, setRecentlyConcludedProcesses] = useState<processProps[]>([])
+    const [awaitingReturnProcesses, setAwaitingReturnProcesses] = useState<processProps[]>([])
     const [monthlyProcessReport, setMonthlyProcessReport] = useState<monthlyProcessReport>({} as monthlyProcessReport)
 
     useEffect(() => {
@@ -36,10 +39,14 @@ export default function Hub(){
             setRecentlyConcludedProcesses(
                 data.filter((process: processProps) => dateIsNear(process.conclusionDate, 'conclusionDate') && (process.status === 'Concluído'))
             )
+            setAwaitingReturnProcesses(
+                data.filter((process: processProps) => process.status === 'Aguardando retorno')
+            )
             setMonthlyProcessReport({
-                total: data.filter((process: { distributionDate: string | number | Date }) => (
+                total: data.filter((process: { distributionDate: string | number | Date }) => {
                     new Date().getMonth() === new Date(process.distributionDate).getMonth()
-                )).length,
+                }
+                ).length,
                 inProgress: data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Em inicialização'
@@ -73,6 +80,85 @@ export default function Hub(){
         return days <= 7
     }
 
+    function getFirstAndLastDateOfMonth(period: 'monthly' | 'trimestral' = 'monthly') {
+        const today = new Date();
+        
+        const firstDayOfMonth = period === 'monthly' ? new Date(today.getFullYear(), today.getMonth(), 1) : new Date(today.getFullYear(), today.getMonth() - 3, 1);
+        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    
+        const formatDate = (date: Date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        };
+    
+        const firstDateFormatted = formatDate(firstDayOfMonth);
+        const lastDateFormatted = formatDate(lastDayOfMonth);
+
+        return {
+            firstDate: firstDateFormatted,
+            lastDate: lastDateFormatted
+        };
+    }
+
+    function getReport(type: 'monthly' | 'trimestral' | 'monthlyLawyer') {
+        let month = getFirstAndLastDateOfMonth()
+        let trimester = getFirstAndLastDateOfMonth('trimestral')
+        
+        switch (type) {
+            case 'monthly':
+                axios
+                    .get(
+                        `http://localhost:3333/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","removeLawyers":"false"}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                'Content-Type': 'application/pdf',
+                            },
+                            responseType: 'arraybuffer',
+                            responseEncoding: 'utf8',
+                        }
+                    )
+                    .then((res) => {
+                        const file = new Blob([res.data], {
+                            type: 'application/pdf',
+                        })
+                        const fileURL = URL.createObjectURL(file)
+                        window.open(fileURL, '_blank')
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        toast.error('Nenhum processo encontrado.')
+                    })
+                    break
+            case 'trimestral':
+                axios
+                    .get(
+                        `http://localhost:3333/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","removeLawyers":"false"}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                'Content-Type': 'application/pdf',
+                            },
+                            responseType: 'arraybuffer',
+                            responseEncoding: 'utf8',
+                        }
+                    )
+                    .then((res) => {
+                        const file = new Blob([res.data], {
+                            type: 'application/pdf',
+                        })
+                        const fileURL = URL.createObjectURL(file)
+                        window.open(fileURL, '_blank')
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        toast.error('Nenhum processo encontrado.')
+                    })
+        }
+    }
+
     return(
         <main className={styles.container}>
             <section className={styles.sectionContainer}>
@@ -89,6 +175,8 @@ export default function Hub(){
                                     <th className={styles.th}>CLIENTE</th>
                                     <th className={styles.th}>ADVOGADO</th>
                                     <th className={styles.th}>TIPO</th>
+                                    <th className={styles.th}>ACESSAR</th>
+                                    <th className={styles.th}>NOTIFICAR</th>
                                 </tr>
                             </thead>
 
@@ -113,13 +201,50 @@ export default function Hub(){
                                         </td>
                                     </tr>
                                 ))}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <div className={styles.tableContainer}>
+                    <section className={styles.tableHeader}>
+                        <h1>PROCESSOS AGUARDANDO RETORNO</h1>
+                    </section>
+                    <section className={styles.tableBody}>
+                        <table className={styles.table}>
+                            <thead>
                                 <tr>
-                                    <td className={styles.td}>TN-238347</td>
-                                    <td className={styles.td}>Aditivo</td>
-                                    <td className={styles.td}>José Bezerra</td>
-                                    <td className={styles.td}>Luiz Rosário</td>
-                                    <td className={styles.td}>Penal</td>
+                                    <th className={styles.th}>PROCESSO</th>
+                                    <th className={styles.th}>MATÉRIA</th>
+                                    <th className={styles.th}>CLIENTE</th>
+                                    <th className={styles.th}>ADVOGADO</th>
+                                    <th className={styles.th}>TIPO</th>
+                                    <th className={styles.th}>ACESSAR</th>
+                                    <th className={styles.th}>NOTIFICAR</th>
                                 </tr>
+                            </thead>
+
+                            <tbody>
+                                {awaitingReturnProcesses.map((process) => (
+                                    <tr key={process.id}>
+                                        <td className={styles.td}>{process.processKey}</td>
+                                        <td className={styles.td}>{process.materia}</td>
+                                        <td className={styles.td}>{process.name}</td>
+                                        <td className={styles.td}>{process.userId}</td>
+                                        <td className={styles.td}>{process.categoryId}</td>
+                                        <td
+                                            className={styles.td}
+                                            onClick={() => push(`/processo/${process.id}`)}
+                                        >
+                                            <AiOutlineComment className={styles.icon}/>
+                                        </td>
+                                        <td
+                                            className={styles.td}
+                                        >
+                                            <AiFillBell className={styles.icon}/>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </section>
@@ -178,6 +303,32 @@ export default function Hub(){
                         </table>
                     </section>
                 </div>
+            </section>
+
+            <section className={styles.sectionContainer}>
+                <button
+                    className={styles.reportShortcutButton}
+                    onClick={() => getReport('monthly')}
+                >
+                    <HiOutlineClipboardDocumentList />
+                    RELATÓRIO MENSAL PROCESSOS
+                </button>
+                
+                <button
+                    className={styles.reportShortcutButton}
+                    onClick={() => getReport('trimestral')}
+                >
+                    <HiOutlineClipboardDocumentList />
+                    RELATÓRIO TRIMESTRAL
+                </button>
+                
+                <button
+                    className={styles.reportShortcutButton}
+                    onClick={() => getReport('monthlyLawyer')}
+                >
+                    <HiOutlineClipboardDocumentList />
+                    RELATÓRIO MENSAL ADVOGADOS
+                </button>
             </section>
         </main>
     )

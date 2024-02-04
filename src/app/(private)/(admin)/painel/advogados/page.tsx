@@ -87,19 +87,21 @@ export default function Advogados() {
     
     return (
         <div className={styles.container}>
-            {advogados.map(advogado => {
-                return (
-                    <CardAdvogado 
-                        key={advogado.id}
-                        id={advogado.id}
-                        nome={advogado.name}
-                        oab={advogado.nroOAB}
-                        processosAndamento={filterProcesses(advogado.id, 'Andamento').length}
-                        processosConcluidos={filterProcesses(advogado.id, 'Concluído').length}
-                        onDelete={handleDeleteUser}
-                    />
-                )
-            })}
+            <div className={styles.gridContainer}>
+                {advogados.map(advogado => {
+                    return (
+                        <CardAdvogado 
+                            key={advogado.id}
+                            id={advogado.id}
+                            nome={advogado.name}
+                            oab={advogado.nroOAB}
+                            processosAndamento={filterProcesses(advogado.id, 'Andamento').length}
+                            processosConcluidos={filterProcesses(advogado.id, 'Concluído').length}
+                            onDelete={handleDeleteUser}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }

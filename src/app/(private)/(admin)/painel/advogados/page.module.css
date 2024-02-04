@@ -1,11 +1,16 @@
 .container {
     width: 100%;
     height: calc(100vh - 12.5rem);
+}
+
+.gridContainer {
+    width: 100%;
+    height: fit-content;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
-    justify-content: space-between;
+    grid-template-rows: auto;
     padding: 1rem;
-    gap: .5rem 2rem;
+    gap: 1rem;
     overflow: scroll;
     overflow-x: hidden;
 }

@@ -7,6 +7,9 @@ type LiProps = {
     title: string
     Modal?: React.ElementType
     icon: React.ElementType
+    type: 'parallelRoute' | 'modal'
+    setModalIsOpen?: (arg0: boolean) => void
+    modalIsOpen?: boolean
 }
 
 export default function PrivateHeader({
@@ -33,20 +36,37 @@ export default function PrivateHeader({
                 </h1>
                 <ul className={styles.navbar}>
                     {navLinks.map((li) => {
-                        return (
-                            <a
-                                onClick={(e) =>
-                                    setPage?.(li.id === page ? 0 : li.id)
-                                }
-                                key={li.id}
-                                style={{
-                                    borderBottom: li.id === page ? '3px solid #000' : 'none'
-                                }}
-                            >
-                                <li.icon className={styles.iconProcessHeader} />
-                                <p>{li.title}</p>
-                            </a>
-                        )
+                        if (li.type === 'parallelRoute') {
+                            return (
+                                <a
+                                    key={li.id}
+                                    onClick={(e) => setPage?.(li.id === page ? 0 : li.id)}
+                                    style={{
+                                        borderBottom: li.id === page ? '3px solid #000' : 'none',
+                                    }}
+                                >
+                                    <li.icon className={styles.iconProcessHeader} />
+                                    <p>{li.title}</p>
+                                </a>
+                            );
+                        } else if (li.type === 'modal') {
+                            return (
+                                li.modalIsOpen ? 
+                                    <li.Modal key={li.id} setModalIsOpen={li.setModalIsOpen} />
+                                :
+                                <a
+                                    key={li.id}
+                                    onClick={() => li.setModalIsOpen && li.setModalIsOpen(true)}
+                                    style={{
+                                        borderBottom: li.id === page ? '3px solid #000' : 'none',
+                                    }}
+                                >
+                                    <li.icon className={styles.iconProcessHeader} />
+                                    <p>{li.title}</p>
+                                </a>
+                            );
+                        }
+                        return null;
                     })}
                 </ul>
             </div>
