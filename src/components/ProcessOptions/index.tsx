@@ -29,7 +29,7 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
         setIsLoading(true)
 
         await axios.patch(
-                `http://localhost:3333/process/${processId}`,
+                `http://localhost:3333/api/process/${processId}`,
                 {
                     status: 'Em andamento',
                     conclusionDate: null,
@@ -57,7 +57,7 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
         setIsLoading(true)
 
         await axios.patch(
-                `http://localhost:3333/process/${processId}`,
+                `http://localhost:3333/api/process/${processId}`,
                 {
                     status: 'Concluído',
                     conclusionDate: new Date(),
@@ -83,7 +83,7 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
 
     async function handleMessageSubmit(message: any) {
         await axios.patch(
-            `http://localhost:3333/process/${processId}`,
+            `http://localhost:3333/api/process/${processId}`,
             {
                 seem: message,
             },

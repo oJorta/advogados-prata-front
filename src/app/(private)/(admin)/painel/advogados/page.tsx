@@ -33,7 +33,7 @@ export default function Advogados() {
 
     async function getUsers() {
         const { data } = await axios.get(
-            'http://localhost:3333/users',
+            'http://localhost:3333/api/users',
             {
                 withCredentials: true,
                 headers: {
@@ -46,7 +46,7 @@ export default function Advogados() {
 
     async function getProcesses() {
         const { data } = await axios.get(
-            'http://localhost:3333/processes',
+            'http://localhost:3333/api/processes',
             {
                 withCredentials: true,
                 headers: {
@@ -68,7 +68,7 @@ export default function Advogados() {
 
     async function handleDeleteUser(id: number) {
         await axios
-        .delete(`http://localhost:3333/user/${id}`, {
+        .delete(`http://localhost:3333/api/user/${id}`, {
             withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,

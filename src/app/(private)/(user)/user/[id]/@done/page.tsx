@@ -15,7 +15,7 @@ const Header: Array<string> = ['Processo','Cliente','Matéria','Data']
 
 
 export default async function CompleteProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/processes',                 
+    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

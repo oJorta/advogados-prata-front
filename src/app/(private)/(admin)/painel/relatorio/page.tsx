@@ -32,7 +32,7 @@ export default function Relatorio(){
     })
 
     useEffect(()=>{
-        axios.get('http://localhost:3333/processes-report-filter-values',                 
+        axios.get('http://localhost:3333/api/processes-report-filter-values',                 
             {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('accessToken')}`
@@ -115,8 +115,8 @@ export default function Relatorio(){
         
     
             // console.log(query.substring(0, query.length-1).concat('}'))
-            console.log(`http://localhost:3333/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`)
-            axios.get(`http://localhost:3333/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`,
+            console.log(`http://localhost:3333/api/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`)
+            axios.get(`http://localhost:3333/api/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`,
             {
                 headers:{
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,

@@ -7,7 +7,7 @@ export async function addNewCategory(newCategory: string) {
     const token = Cookies.get('accessToken');
 
     try {
-        const response = await axios.post('http://localhost:3333/category', {
+        const response = await axios.post('http://localhost:3333/api/category', {
             name: newCategory,
         }, {
             withCredentials: true,
@@ -18,7 +18,7 @@ export async function addNewCategory(newCategory: string) {
 
         /* setCategories([...categories, response.data.name]); */
 
-        const { data } = await axios.get('http://localhost:3333/users', {
+        const { data } = await axios.get('http://localhost:3333/api/users', {
             withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export async function addNewCategory(newCategory: string) {
             if(user.role !== 'lawyer') continue
             try {
                 await axios.post(
-                    'http://localhost:3333/specialty',
+                    'http://localhost:3333/api/specialty',
                     {
                         affinity: 0,
                         categoryId: Number(response.data.id),

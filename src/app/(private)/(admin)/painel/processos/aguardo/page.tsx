@@ -13,7 +13,7 @@ const Header: Array<string> = ['Processo','Matéria','Cliente','Categoria','Praz
 
 
 export default async function WaitingProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/processes',                 
+    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -29,7 +29,7 @@ export default async function WaitingProcess(){
                     return []
                 })
 
-            const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/users',                 
+            const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/api/users',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -45,7 +45,7 @@ export default async function WaitingProcess(){
                     return []
                 })
 
-            const getCategories: categoryUser[] = await axios.get('http://localhost:3333/categories',                 
+            const getCategories: categoryUser[] = await axios.get('http://localhost:3333/api/categories',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

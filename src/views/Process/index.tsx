@@ -45,7 +45,7 @@ export default function Process({ initialValues, categories, lawyers }:processPr
             setInputLawyer([])
         }
         else{
-            axios.get(`http://localhost:3333/specialties-by-category/${inputProcess.categoryId}`,          
+            axios.get(`http://localhost:3333/api/specialties-by-category/${inputProcess.categoryId}`,          
             {
                 headers:{
                     Authorization: `Bearer ${Cookies.get('accessToken')}`
@@ -125,7 +125,7 @@ export default function Process({ initialValues, categories, lawyers }:processPr
                 delete data.userId
             }
             let createProcessSuccess: boolean = false
-            const id: number = await axios.post('http://localhost:3333/process',
+            const id: number = await axios.post('http://localhost:3333/api/process',
             data,
             {
                 headers:{
@@ -145,7 +145,7 @@ export default function Process({ initialValues, categories, lawyers }:processPr
                 let allFileSuccess: number = 0
                 for(const file of validation.data.file as File[]){
 
-                    await axios.post('http://localhost:3333/process-documents',
+                    await axios.post('http://localhost:3333/api/process-documents',
                         {
                             processId: id,
                             file: file,

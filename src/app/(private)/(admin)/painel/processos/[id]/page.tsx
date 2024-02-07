@@ -14,7 +14,7 @@ import { selectedStatus } from '@/functions/status'
 
 
 export default async function UpdateProcess({ params }: { params: { id: string } }){
-    const getCategories: categoryUser[] = await axios.get('http://localhost:3333/categories',                 
+    const getCategories: categoryUser[] = await axios.get('http://localhost:3333/api/categories',                 
         {
             headers: {
                 Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -29,7 +29,7 @@ export default async function UpdateProcess({ params }: { params: { id: string }
             return error
         })
 
-        const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/users',                 
+        const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/api/users',                 
             {
                 headers: {
                     Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -44,7 +44,7 @@ export default async function UpdateProcess({ params }: { params: { id: string }
                 return []
             })
 
-        const getIdProcess: backProcessDatas = await axios.get(`http://localhost:3333/process/${params.id}`,                 
+        const getIdProcess: backProcessDatas = await axios.get(`http://localhost:3333/api/process/${params.id}`,                 
             {
                 headers: {
                     Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -59,7 +59,7 @@ export default async function UpdateProcess({ params }: { params: { id: string }
                 return []
             })
 
-        const getFiles: any[] = await axios.get(`http://localhost:3333/process-documents-by-process/${params.id}`,                 
+        const getFiles: any[] = await axios.get(`http://localhost:3333/api/process-documents-by-process/${params.id}`,                 
         {
             headers: {
                 Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

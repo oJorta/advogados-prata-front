@@ -51,7 +51,7 @@ export default function Add() {
     useEffect(() => {
         const getCategories = async () => {
             const { data } = await axios.get(
-                'http://localhost:3333/categories',
+                'http://localhost:3333/api/categories',
                 {
                     withCredentials: true,
                     headers: {
@@ -113,7 +113,7 @@ export default function Add() {
 
     async function handleAddNewCategory() {
         try {
-            const response = await axios.post('http://localhost:3333/category', {
+            const response = await axios.post('http://localhost:3333/api/category', {
                 name: newCategory,
             }, {
                 withCredentials: true,
@@ -124,7 +124,7 @@ export default function Add() {
     
             setCategories([...categories, response.data.name]);
     
-            const { data } = await axios.get('http://localhost:3333/users', {
+            const { data } = await axios.get('http://localhost:3333/api/users', {
                 withCredentials: true,
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ export default function Add() {
                 if(user.role !== 'lawyer') continue
                 try {
                     await axios.post(
-                        'http://localhost:3333/specialty',
+                        'http://localhost:3333/api/specialty',
                         {
                             affinity: 0,
                             categoryId: Number(response.data.id),
@@ -182,7 +182,7 @@ export default function Add() {
 
     async function handleDeleteCategory(id: number) {
         try {
-            await axios.delete(`http://localhost:3333/category/${id}`, {
+            await axios.delete(`http://localhost:3333/api/category/${id}`, {
                 withCredentials: true,
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -213,7 +213,7 @@ export default function Add() {
         }
 
         await axios
-            .post('http://localhost:3333/user', userData, {
+            .post('http://localhost:3333/api/user', userData, {
                 withCredentials: true,
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -224,7 +224,7 @@ export default function Add() {
                     newAdvogado.specialties.forEach(async (specialty: any) => {
 
                         await axios.post(
-                            'http://localhost:3333/specialty',
+                            'http://localhost:3333/api/specialty',
                             {
                                 affinity: Number(specialty.affinity),
                                 categoryId: Number(specialty.id),

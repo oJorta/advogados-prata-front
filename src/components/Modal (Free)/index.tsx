@@ -22,7 +22,7 @@ export default function ModalFree({isOpen, setOpen}: modalProps) {
 
     async function FreeProcess(){
 
-        await axios.patch('http://localhost:3333/processes',
+        await axios.patch('http://localhost:3333/api/processes',
         {
             ids: isOpen.id
         },

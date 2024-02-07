@@ -12,7 +12,7 @@ const Header: Array<string> = ['Processo','Prazo','Matéria','Cliente','Status']
 
 
 export default async function DefaultProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/processes',                 
+    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

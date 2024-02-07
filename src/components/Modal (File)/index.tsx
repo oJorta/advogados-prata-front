@@ -27,7 +27,7 @@ export default function Modal({isOpen, setOpen, process, setFile}: modalFileProp
         const verifyFile: File[]  = file.splice(arg, 1)
         if(verifyFile[0].id){
 
-            axios.delete(`http://localhost:3333/process-document/${verifyFile[0].id}`,
+            axios.delete(`http://localhost:3333/api/process-document/${verifyFile[0].id}`,
             {
                 headers:{
                     Authorization: `Bearer ${Cookies.get('accessToken')}`,

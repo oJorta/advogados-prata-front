@@ -47,7 +47,7 @@ export default function AdvogadoID() {
     useEffect(() => {
         const getData = async () => {
             const user = await axios.get(
-                `http://localhost:3333/user/${id}`,
+                `http://localhost:3333/api/user/${id}`,
                 {
                     withCredentials: true,
                     headers: {
@@ -57,7 +57,7 @@ export default function AdvogadoID() {
             )
 
             const processes = await axios.get(
-                'http://localhost:3333/processes',
+                'http://localhost:3333/api/processes',
                 {
                     withCredentials: true,
                     headers: {
@@ -68,7 +68,7 @@ export default function AdvogadoID() {
             setProcesses(processes.data)
 
             const categories = await axios.get(
-                'http://localhost:3333/categories',
+                'http://localhost:3333/api/categories',
                 {
                     withCredentials: true,
                     headers: {
@@ -77,7 +77,7 @@ export default function AdvogadoID() {
                 }
             )
             const specialties = await axios.get(
-                'http://localhost:3333/specialties',
+                'http://localhost:3333/api/specialties',
                 {
                     withCredentials: true,
                     headers: {
@@ -115,7 +115,7 @@ export default function AdvogadoID() {
     useEffect(() => {
         const getCategories = async () => {
             const { data } = await axios.get(
-                'http://localhost:3333/categories',
+                'http://localhost:3333/api/categories',
                 {
                     withCredentials: true,
                     headers: {
@@ -131,7 +131,7 @@ export default function AdvogadoID() {
     useEffect(() => {
         const getSpecialties = async () => {
             const { data } = await axios.get(
-                'http://localhost:3333/specialties',
+                'http://localhost:3333/api/specialties',
                 {
                     withCredentials: true,
                     headers: {
@@ -168,7 +168,7 @@ export default function AdvogadoID() {
     }
 
     async function handleAddNewCategory() {
-        await axios.post('http://localhost:3333/category',
+        await axios.post('http://localhost:3333/api/category',
         {
             name: newCategory,
         }, {
@@ -217,7 +217,7 @@ export default function AdvogadoID() {
         }
         
         await axios
-        .patch(`http://localhost:3333/user/${id}`, userData, {
+        .patch(`http://localhost:3333/api/user/${id}`, userData, {
             withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -243,7 +243,7 @@ export default function AdvogadoID() {
                         const specialtyId = specialties.find((item: any) => item.category.id === specialty.id).id
 
                         await axios.patch(
-                            `http://localhost:3333/specialty/${specialtyId}`,
+                            `http://localhost:3333/api/specialty/${specialtyId}`,
                             {   
                                 affinity: specialty.affinity,
                                 userId: Number(id),
@@ -261,7 +261,7 @@ export default function AdvogadoID() {
                 addedSpecialties.length > 0 &&
                     addedSpecialties.forEach(async (specialty: any) => {
                         await axios.post(
-                            'http://localhost:3333/specialty',
+                            'http://localhost:3333/api/specialty',
                             {   
                                 affinity: Number(specialty.affinity),
                                 userId: Number(id),
@@ -279,7 +279,7 @@ export default function AdvogadoID() {
                 removedSpecialties.length > 0 &&
                     removedSpecialties.forEach(async (specialty: any) => {
                         await axios.delete(
-                            `http://localhost:3333/specialty/${specialty.id}`,
+                            `http://localhost:3333/api/specialty/${specialty.id}`,
                             {
                                 withCredentials: true,
                                 headers: {

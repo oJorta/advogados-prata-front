@@ -67,7 +67,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                 let messages : HTMLElement[] = Array.from(current.childNodes).filter((msg: any) => msg.className === 'Message_receivedContainer__jk5j_') as HTMLElement[]
                 let lastMessage = messages[messages.length - 1]
 
-                const process = await axios.get(`http://localhost:3333/process/${Number(processId)}`,
+                const process = await axios.get(`http://localhost:3333/api/process/${Number(processId)}`,
                     {
                         withCredentials: true,
                         headers: {
@@ -79,7 +79,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                 let revisionResponseId = null
                 try {
                     const response = await axios.post(
-                        'http://localhost:3333/revision-response',
+                        'http://localhost:3333/api/revision-response',
                         {
                             "title": "Titulo",
                             "orientation": newMessage.content,
@@ -104,7 +104,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                                 let newFile = new File([file], fileName, { type: file.type })
 
                                 try {
-                                    await axios.post('http://localhost:3333/revision-response-documents', {
+                                    await axios.post('http://localhost:3333/api/revision-response-documents', {
                                         file: newFile,
                                         revisionResponseId: revisionResponseId
                                     },
@@ -129,7 +129,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
 
                         revisionResponseId && (
                             await axios.delete(
-                                `http://localhost:3333/revision-response/${revisionResponseId}`,
+                                `http://localhost:3333/api/revision-response/${revisionResponseId}`,
                                 {
                                     withCredentials: true,
                                     headers: {
@@ -145,7 +145,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
             let revisionRequestId = null
             try {
                 const response = await axios.post(
-                    'http://localhost:3333/revision-request',
+                    'http://localhost:3333/api/revision-request',
                     {
                         "title": "Titulo",
                         "report": newMessage.content,
@@ -169,7 +169,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                         let newFile = new File([file], fileName, { type: file.type })
 
                         try {
-                            await axios.post('http://localhost:3333/revision-request-documents', {
+                            await axios.post('http://localhost:3333/api/revision-request-documents', {
                                 file: newFile,
                                 revisionRequestId: revisionRequestId
                             },
@@ -195,7 +195,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
 
                 revisionRequestId && (
                     await axios.delete(
-                        `http://localhost:3333/revision-request/${revisionRequestId}`,
+                        `http://localhost:3333/api/revision-request/${revisionRequestId}`,
                         {
                             withCredentials: true,
                             headers: {

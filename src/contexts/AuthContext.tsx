@@ -75,7 +75,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         try {
             const { data } = await axios
             .post(
-                'http://localhost:3333/auth/login',
+                'http://localhost:3333/api/auth/login',
                 {
                     email: username,
                     password: password,

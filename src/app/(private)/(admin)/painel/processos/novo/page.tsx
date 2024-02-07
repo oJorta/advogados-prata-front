@@ -11,7 +11,7 @@ import { credentialInputs } from '@/types/zodProcess'
 
 
 export default async function CompleteProcess(){
-    const getCategories: processProps[] = await axios.get('http://localhost:3333/categories',                 
+    const getCategories: processProps[] = await axios.get('http://localhost:3333/api/categories',                 
         {
             headers: {
                 Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -27,7 +27,7 @@ export default async function CompleteProcess(){
             return []
         })
 
-    const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/users',                 
+    const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/api/users',                 
         {
             headers: {
                 Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

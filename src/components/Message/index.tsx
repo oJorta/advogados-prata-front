@@ -35,7 +35,7 @@ export default function Message({ type, data }: MessageProps ) {
     useEffect(() => {
         const getData = async () => { 
             if(type === 'request') {
-                const documents = await axios.get(`http://localhost:3333/revision-request-documents-by-process/${processId}`,
+                const documents = await axios.get(`http://localhost:3333/api/revision-request-documents-by-process/${processId}`,
                 {
                     withCredentials: true,
                     headers: {
@@ -45,7 +45,7 @@ export default function Message({ type, data }: MessageProps ) {
                 setDocuments(documents.data.filter((document: any) => document.revisionRequestId === data.id))
             }
             if(type === 'response') {
-                const documents = await axios.get(`http://localhost:3333/revision-response-documents-by-process/${processId}`,
+                const documents = await axios.get(`http://localhost:3333/api/revision-response-documents-by-process/${processId}`,
                 {
                     withCredentials: true,
                     headers: {
@@ -55,7 +55,7 @@ export default function Message({ type, data }: MessageProps ) {
                 setDocuments(documents.data.filter((document: any) => document.revisionResponseId === data.id))
             }
 
-            const process = await axios.get(`http://localhost:3333/process/${Number(processId)}`,
+            const process = await axios.get(`http://localhost:3333/api/process/${Number(processId)}`,
             {
                 withCredentials: true,
                 headers: {
@@ -65,7 +65,7 @@ export default function Message({ type, data }: MessageProps ) {
             setProcess(process.data)
 
             const user = await axios.get(
-                `http://localhost:3333/user/${process.data.userId}`,
+                `http://localhost:3333/api/user/${process.data.userId}`,
                 {
                     withCredentials: true,
                     headers: {

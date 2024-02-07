@@ -25,7 +25,7 @@ export default function Hub(){
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios.get('http://localhost:3333/processes', 
+            const { data } = await axios.get('http://localhost:3333/api/processes', 
             {
                 withCredentials: true,
                 headers: {
@@ -110,7 +110,7 @@ export default function Hub(){
             case 'monthly':
                 axios
                     .get(
-                        `http://localhost:3333/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","removeLawyers":"false"}`,
+                        `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","removeLawyers":"false"}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ export default function Hub(){
             case 'trimestral':
                 axios
                     .get(
-                        `http://localhost:3333/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","removeLawyers":"false"}`,
+                        `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","removeLawyers":"false"}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,

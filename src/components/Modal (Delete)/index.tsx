@@ -21,7 +21,7 @@ export default function ModalDelete({isOpen, setOpen}: modalProps) {
 
     async function DeleteProcess(){
         
-        await axios.delete('http://localhost:3333/processes',
+        await axios.delete('http://localhost:3333/api/processes',
             {
             data:{
                 ids: isOpen.id,
