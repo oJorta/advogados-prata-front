@@ -21,11 +21,10 @@ export default async function UpdateProcess({ params }: { params: { id: string }
                 Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
             },
         })
-        .then(responde=>{
-            return responde.data
+        .then(response => {
+            return response.data
         })
         .catch(error=>{
-            // console.log(error)
             return error
         })
 
@@ -36,10 +35,10 @@ export default async function UpdateProcess({ params }: { params: { id: string }
                     Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                 },
             })
-            .then(responde=>{
-                return responde.data
+            .then(response => {
+                return response.data
             })
-            .catch(error=>{
+            .catch(error => {
                 console.log(error)
                 return []
             })
@@ -51,39 +50,51 @@ export default async function UpdateProcess({ params }: { params: { id: string }
                     Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                 },
             })
-            .then(responde=>{
-                return responde.data
+            .then(response => {
+                return response.data
             })
-            .catch(error=>{
+            .catch(error => {
                 console.log(error)
                 return []
             })
 
-        const getFiles: any[] = await axios.get(`http://localhost:3333/api/process-documents-by-process/${params.id}`,                 
+        const getFiles: any[] = await axios.get(`http://localhost:3333/api/process-documents?process=${params.id}`,                 
         {
             headers: {
                 Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
                 Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
             },
         })
-        .then(response=>{
+        .then(response => {
             console.log(response.data)
             return response.data
         })
-        .catch(error=>{
-            if(error){
-                return []
-            }
+        .catch(error => {
+            error && []
         })
+        /* const getFiles: any[] = await axios.get(`http://localhost:3333/api/process-documents-by-process/${params.id}`,                 
+        {
+            headers: {
+                Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
+                Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
+            },
+        })
+        .then(response => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(error => {
+            error && []
+        }) */
         
         function addValues(arg: backProcessDatas){
 
             const initValues: credentialInputs = {
                 processKey: arg.processKey,
-                materia: arg.materia === null ? '' : arg.materia,
+                matter: arg.matter === null ? '' : arg.matter,
                 deadline: arg.deadline === null ? new Date() : new Date(arg.deadline),
                 name: arg.name === null ? '' : arg.name,
-                information: arg.information === null ? '' : arg.information,
+                description: arg.description === null ? '' : arg.description,
                 categoryId: arg.categoryId,
                 userId: arg.userId,
                 status: selectedStatus(arg.status as status),

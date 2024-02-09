@@ -20,11 +20,10 @@ export default async function DefaultProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    // console.log(responde)
-                    return responde.data
+                .then(response => {
+                    return response.data
                 })
-                .catch(error=>{
+                .catch(error=> {
                     console.log(error)
                     return []
                 })
@@ -36,11 +35,10 @@ export default async function DefaultProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    // console.log(responde)
-                    return responde.data as lawyerUser[]
+                .then(response => {
+                    return response.data as lawyerUser[]
                 })
-                .catch(error=>{
+                .catch(error=> {
                     console.log(error)
                     return []
                 })
@@ -52,11 +50,11 @@ export default async function DefaultProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(response =>{
+                .then(response => {
                     return response.data
 
                 })
-                .catch(error=>{
+                .catch(error=> {
                     console.log(error)
                     return []
                 })

@@ -19,16 +19,14 @@ type modalProps = {
 
 export default function ModalDelete({isOpen, setOpen}: modalProps) {
 
-    async function DeleteProcess(){
+    async function deleteProcess(){
         
         await axios.delete('http://localhost:3333/api/processes',
             {
             data:{
                 ids: isOpen.id,
             }, 
-            headers:{
-                Authorization: `Bearer ${Cookies.get('accessToken')}`
-            }
+            withCredentials: true
             })
             .then(response=>{
                 toast.success('Processo(s) deletado(s) com sucesso!')
@@ -51,7 +49,7 @@ export default function ModalDelete({isOpen, setOpen}: modalProps) {
                 </div>
                     <h1>Tem certeza que quer deletar esse(s) processo(s)?</h1>
                     <div className={styles.containerBtn}>
-                        <button onClick={DeleteProcess} className={styles.btnUpdate}>Sim</button>
+                        <button onClick={deleteProcess} className={styles.btnUpdate}>Sim</button>
                         <button className={styles.btnDelete} onClick={()=>{
                             setOpen({open: !isOpen.open, id: isOpen.id})
                         }}>Não</button>

@@ -33,12 +33,10 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
                 {
                     status: 'Em andamento',
                     conclusionDate: null,
-                    seem: null,
+                    legalOpinion: null,
                 },
                 {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true,
                 }
             )
             .then(() => {
@@ -63,9 +61,7 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
                     conclusionDate: new Date(),
                 },
                 {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true,
                 }
             )
             .then(() => {
@@ -85,12 +81,10 @@ export default function ProcessOptions({ setOpen, type }: ModalProps ) {
         await axios.patch(
             `http://localhost:3333/api/process/${processId}`,
             {
-                seem: message,
+                legalOpinion: message,
             },
             {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             }
         )
         .then(() => {

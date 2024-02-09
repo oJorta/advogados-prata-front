@@ -21,11 +21,13 @@ export default function UserLayout({ children, done, profile }: { children: Reac
         id: 1,
         title: 'PROCESSOS CONCLUÍDOS',
         icon: AiOutlineFileDone,
+        type: 'parallelRoute'
     },
     {
         id: 2,
         title: 'PERFIL',
         icon: BiSolidUser,
+        type: 'parallelRoute'
     },
 ]
 

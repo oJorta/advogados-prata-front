@@ -52,7 +52,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
     }, [query, dbData])
 
-    function SelectedProcess(el: React.ChangeEvent<HTMLInputElement>){
+    function selectedProcess(el: React.ChangeEvent<HTMLInputElement>){
 
         if(!trash[el.currentTarget.value]){
             setTrash({...trash, [el.currentTarget.value]: Number(el.currentTarget.value)})
@@ -65,7 +65,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
 //  Funções para os botões     
 
-    function SelectAllFunction(el: React.MouseEvent<HTMLButtonElement>){
+    function selectAllFunctions(el: React.MouseEvent<HTMLButtonElement>){
         let ids: number[] = []
         if(isEmptyObj(trash)){
             data.map(row=>{
@@ -96,7 +96,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
         }
     }
 
-    function DeleteFunction(el: React.MouseEvent<HTMLButtonElement>){
+    function deleteFunction(el: React.MouseEvent<HTMLButtonElement>){
 
         if(Object.values(trash).length !== 0){
             setOpenModalDel({open: !openModalDel.open, id: Object.values(trash)})
@@ -106,7 +106,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
         }
     }
     
-    function FreeFunction(el: React.MouseEvent<HTMLButtonElement>){
+    function freeFunction(el: React.MouseEvent<HTMLButtonElement>){
         
         if(Object.values(trash).length !== 0){
             setOpenModalFree({open: !openModalFree.open, id: Object.values(trash)})
@@ -134,7 +134,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
             if(col.status != 'Em aguardo' && col.status != 'Concluído'){
                 return(
                     <div key={col.id}>
-                        <input value={col.id} onChange={SelectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
+                        <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
 
                         <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
@@ -172,7 +172,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                 if(col.status === 'Em aguardo'){                      
                     return(
                         <div key={col.id} >
-                            <input value={col.id} onChange={SelectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
+                            <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
 
                             <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
@@ -211,7 +211,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                 if(col.status === 'Concluído'){
                     return(
                         <div key={col.id}>
-                            <input value={col.id} onChange={SelectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
+                            <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
 
                             <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
@@ -250,7 +250,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
         <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree}/>
         <section className={styles.containerProcess}>
             <div className={styles.backgroundTrash}>
-                <button className={styles.selectAllBtn} onClick={SelectAllFunction}>
+                <button className={styles.selectAllBtn} onClick={selectAllFunctions}>
                     {!isEmptyObj(trash) ?
                     <MdOutlineDeselect />
                     :
@@ -259,11 +259,11 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                 </button>
                 {
                     pathname !== '/painel/processos' ?
-                <button className={styles.freeBtn} onClick={FreeFunction}>
+                <button className={styles.freeBtn} onClick={freeFunction}>
                     <RiCheckboxCircleLine />
                 </button> : <></>
                 }
-                <button className={styles.deleteBtn} onClick={DeleteFunction}>
+                <button className={styles.deleteBtn} onClick={deleteFunction}>
                     <RiDeleteBin6Fill />
                 </button>
             </div>

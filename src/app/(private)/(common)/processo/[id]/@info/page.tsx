@@ -24,27 +24,18 @@ export default function Add() {
                 `http://localhost:3333/api/process/${path.split('/')[2]}`,
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
             const advogadoData = await axios.get(
                 `http://localhost:3333/api/user/${processData.data.userId}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             const processDocuments = await axios.get(
-                `http://localhost:3333/api/process-documents-by-process/${processData.data.id}`,
+                `http://localhost:3333/api/process-documents?process=${processData.data.id}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             setProcess(processData.data)

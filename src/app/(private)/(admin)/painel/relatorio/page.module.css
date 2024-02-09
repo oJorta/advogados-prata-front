@@ -47,6 +47,7 @@
     height: 8rem;
     justify-content: space-between;
 }
+
 .labelSelectDate{
     position: relative;
     width: 45%;
@@ -58,7 +59,6 @@
     border-bottom: 0.125rem solid var(--color-gray30);
     gap: 1rem;
 }
-
 
 .labelSelectDate>span{
     font-size: 0.8rem;
@@ -151,4 +151,16 @@
     border: none;
     color: var(--color-approxWhite);
     background-color: var(--color-gray20);
+}
+
+.radioContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.radioContainer label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }

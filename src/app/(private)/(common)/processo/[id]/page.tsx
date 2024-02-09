@@ -29,16 +29,13 @@ export default function Processo() {
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     const getProcess = async () => {
-        const { data } = await axios
-            .get(`http://localhost:3333/api/process/${processId}`)
-        /* const { data } = await axios
-            .get(`http://localhost:3333/api/process/${processId}`, {
+        const { data } = await axios.get(
+            `http://localhost:3333/api/process/${processId}`,
+            {
                 withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                },
-            })
-        
+            }
+        )
+        /*
         if (user?.role === 'lawyer' && data.userId !== user?.id) back()
         */
 
@@ -46,27 +43,21 @@ export default function Processo() {
     }
     
     const getRevisionRequests = async () => {
-        const { data } = await axios
-        .get('http://localhost:3333/api/revision-requests')
-        /* const { data } = await axios
-        .get('http://localhost:3333/api/revision-requests', {
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-            },
-        }) */
+        const { data } = await axios.get(
+            'http://localhost:3333/api/revision-requests',
+            {
+                withCredentials: true,
+            }
+        )
         return data
     }
     const getRevisionResponses = async () => {
-        const { data } = await axios
-        .get(`http://localhost:3333/api/revision-responses?process=${processId}`)
-        /* const { data } = await axios
-        .get(`http://localhost:3333/api/revision-responses?process=${processId}`, {
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }) */
+        const { data } = await axios.get(
+            `http://localhost:3333/api/revision-responses?process=${processId}`,
+            {
+                withCredentials: true,
+            }
+        )
         return data
     }
 
@@ -119,7 +110,7 @@ export default function Processo() {
                     {process.status === 'Concluído' && (
                         <div className={styles.conclusionContainer}>
                             <h3>PARECER DO PROCESSO:</h3>
-                            <p>{process.seem}</p>
+                            <p>{process.legalOpinion}</p>
                         </div>
                     )}
                     <div ref={messagesEndRef} />

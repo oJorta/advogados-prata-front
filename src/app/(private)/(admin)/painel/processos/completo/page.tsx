@@ -21,10 +21,10 @@ export default async function CompleteProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    return responde.data
+                .then(response => {
+                    return response.data
                 })
-                .catch(error=>{
+                .catch(error => {
                     console.log(error)
                     return []
                 })
@@ -36,10 +36,10 @@ export default async function CompleteProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    return responde.data
+                .then(response => {
+                    return response.data
                 })
-                .catch(error=>{
+                .catch(error => {
                     console.log(error)
                     return []
                 })
@@ -51,10 +51,10 @@ export default async function CompleteProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    return responde.data
+                .then(response => {
+                    return response.data
                 })
-                .catch(error=>{
+                .catch(error => {
                     console.log(error)
                     return []
                 })

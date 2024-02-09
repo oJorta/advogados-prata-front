@@ -18,6 +18,7 @@ export default function AdvogadosLayout({ children, info }: { children: ReactNod
         id: 1,
         title: 'INFORMAÇÕES DO PROCESSO',
         icon: BsInfoLg,
+        type: 'parallelRoute'
     },
 ]
 

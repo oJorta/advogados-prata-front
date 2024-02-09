@@ -49,7 +49,7 @@ export default function ProcessTable({head, type, dbData }: tableProps){
                                     ${col.deadline.substring(5, 7)}
                                     /${col.deadline.substring(0, 4)}`: '--'}</p>
 
-                            <p title={col.materia ? col.materia : '--'}>{col.materia ? col.materia : '--'}</p>
+                            <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
 
                             <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
 
@@ -75,7 +75,7 @@ export default function ProcessTable({head, type, dbData }: tableProps){
 
                         <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
 
-                        <p title={col.materia ? col.materia : '--'}>{col.materia ? col.materia : '--'}</p>
+                        <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
 
                             <p>{col.conclusionDate ? col.conclusionDate.substring(0, 10) : 'Incompleto'}</p>
                             

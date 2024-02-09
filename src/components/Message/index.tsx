@@ -13,9 +13,8 @@ type MessageProps = {
         id: string
         title: string
         orientation?: string
-        report?: string
-        revisionRequestDate?: string
-        revisionResponseDate?: string
+        description?: string
+        createdAt?: string
         userId?: number
         revisionRequestId?: number
         processId?: number
@@ -35,47 +34,38 @@ export default function Message({ type, data }: MessageProps ) {
     useEffect(() => {
         const getData = async () => { 
             if(type === 'request') {
-                const documents = await axios.get(`http://localhost:3333/api/revision-request-documents-by-process/${processId}`,
+                const documents = await axios.get(`http://localhost:3333/api/revision-request-documents?process=${processId}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 })
-                setDocuments(documents.data.filter((document: any) => document.revisionRequestId === data.id))
+                setDocuments(documents.data)
+                /* setDocuments(documents.data.filter((document: any) => document.revisionRequestId === data.id)) */
             }
             if(type === 'response') {
-                const documents = await axios.get(`http://localhost:3333/api/revision-response-documents-by-process/${processId}`,
+                const documents = await axios.get(`http://localhost:3333/api/revision-response-documents?process=${processId}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 })
-                setDocuments(documents.data.filter((document: any) => document.revisionResponseId === data.id))
+                setDocuments(documents.data)
+                /* setDocuments(documents.data.filter((document: any) => document.revisionResponseId === data.id)) */
             }
 
             const process = await axios.get(`http://localhost:3333/api/process/${Number(processId)}`,
             {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true
             })
             setProcess(process.data)
 
             const user = await axios.get(
                 `http://localhost:3333/api/user/${process.data.userId}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             setLawyer(user.data)
         }
         getData()
+        console.log(data)
     }, [])
 
     function handleFileDownload (fileLink: RequestInfo | URL, fileName: string) {
@@ -108,7 +98,7 @@ export default function Message({ type, data }: MessageProps ) {
                     <div className={styles.sentContainer} id={String(data.id)}>
                         <p>{`${user.name} (Você)`}</p>
                         <div className={styles.sentMessageContainer}>
-                            <p>{data.report}</p>
+                            <p>{data.description}</p>
                         </div>
                         {documents.map((document: any) => {
                             return (
@@ -123,13 +113,13 @@ export default function Message({ type, data }: MessageProps ) {
                             )
                         })}
                         <p className={styles.dateAndTime}>
-                            {data.revisionRequestDate
+                            {data.createdAt
                                 ?.split('T')[0]
                                 .split('-')
                                 .reverse()
                                 .join('/')}{' '}
                             •{' '}
-                            {data.revisionRequestDate
+                            {data.createdAt
                                 ?.split('T')[1]
                                 .split('.')[0]
                                 .slice(0, 5)}
@@ -140,7 +130,7 @@ export default function Message({ type, data }: MessageProps ) {
                     <div className={styles.receivedContainer} id={String(data.revisionRequestId)}>
                         <p>{'ADM'}</p>
                         <div className={styles.receivedMessageContainer}>
-                            <p>{data.orientation}</p>
+                            <p>{data.description}</p>
                         </div>
                         {documents.map((document: any) => {
                             return (
@@ -155,13 +145,13 @@ export default function Message({ type, data }: MessageProps ) {
                             )
                         })}
                         <p className={styles.dateAndTime}>
-                            {data.revisionResponseDate
+                            {data.createdAt
                                 ?.split('T')[0]
                                 .split('-')
                                 .reverse()
                                 .join('/')}{' '}
                             •{' '}
-                            {data.revisionResponseDate
+                            {data.createdAt
                                 ?.split('T')[1]
                                 .split('.')[0]
                                 .slice(0, 5)}
@@ -176,7 +166,7 @@ export default function Message({ type, data }: MessageProps ) {
                     <div className={styles.receivedContainer} id={String(data.id)}>
                         <p>{`${lawyer.name} (Advogado)`}</p>
                         <div className={styles.receivedMessageContainer}>
-                            <p>{data.report}</p>
+                            <p>{data.description}</p>
                         </div>
                         {documents.map((document: any) => {
                             return (
@@ -191,13 +181,13 @@ export default function Message({ type, data }: MessageProps ) {
                             )
                         })}
                         <p className={styles.dateAndTime}>
-                            {data.revisionRequestDate
+                            {data.createdAt
                                 ?.split('T')[0]
                                 .split('-')
                                 .reverse()
                                 .join('/')}{' '}
                             •{' '}
-                            {data.revisionRequestDate
+                            {data.createdAt
                                 ?.split('T')[1]
                                 .split('.')[0]
                                 .slice(0, 5)}
@@ -208,7 +198,7 @@ export default function Message({ type, data }: MessageProps ) {
                     <div className={styles.sentContainer} id={String(data.revisionRequestId)}>
                         <p>{`${user.name} (Você)`}</p>
                         <div className={styles.sentMessageContainer}>
-                            <p>{data.orientation}</p>
+                            <p>{data.description}</p>
                         </div>
                         {documents.map((document: any) => {
                             return (
@@ -223,13 +213,13 @@ export default function Message({ type, data }: MessageProps ) {
                             )
                         })}
                         <p className={styles.dateAndTime}>
-                            {data.revisionResponseDate
+                            {data.createdAt
                                 ?.split('T')[0]
                                 .split('-')
                                 .reverse()
                                 .join('/')}{' '}
                             •{' '}
-                            {data.revisionResponseDate
+                            {data.createdAt
                                 ?.split('T')[1]
                                 .split('.')[0]
                                 .slice(0, 5)}

@@ -20,20 +20,22 @@ type modalProps = {
 
 export default function ModalFree({isOpen, setOpen}: modalProps) {
 
-    async function FreeProcess(){
+    async function distributeProcess(){
 
-        await axios.patch('http://localhost:3333/api/processes',
-        {
-            ids: isOpen.id
-        },
-        {
-            headers:{
-                Authorization: `Bearer ${Cookies.get('accessToken')}`
-            }})
-            .then(response=>{
+        await axios
+            .patch(
+                'http://localhost:3333/api/processes',
+                {
+                    ids: isOpen.id,
+                },
+                {
+                    withCredentials: true,
+                }
+            )
+            .then((response) => {
                 toast.success('Processo(s) liberados(s) com sucesso!')
             })
-            .catch(error=>{
+            .catch((error) => {
                 console.log(error)
             })
         window.location.reload()
@@ -51,7 +53,7 @@ export default function ModalFree({isOpen, setOpen}: modalProps) {
                 </div>
                     <h1>Tem certeza que quer liberar esse(s) processo(s)?</h1>
                     <div className={styles.containerBtn}>
-                        <button onClick={FreeProcess} className={styles.btnUpdate}>Sim</button>
+                        <button onClick={distributeProcess} className={styles.btnUpdate}>Sim</button>
                         <button className={styles.btnDelete} onClick={()=>{
                             setOpen({open: !isOpen.open, id: isOpen.id})
                         }}>Não</button>

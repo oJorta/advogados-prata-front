@@ -1,7 +1,9 @@
-.backgroundNewProcess{
-    margin-top: 0.5rem;
+.container{
+    /* margin-top: 0.5rem; */
     padding: 2rem;
-    width: var(--container-form);
+    /* width: var(--container-form); */
+    width: 100%;
+    max-width: 800px;
     height: auto;
     overflow-y: scroll;
     display: flex;
@@ -9,9 +11,10 @@
     justify-content: flex-start;
     align-items: center;
     animation: var(--animation-appear);
+    margin: 0 auto;
 }
 
-.form{
+.form {
     display: flex;
     width: 100%;
     flex-flow: column nowrap;
@@ -29,9 +32,8 @@
     align-items: center;
     gap: 1rem;
     background-color: var(--color-approxWhite);
-    border: solid 0.125rem var(--color-darkBlue);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-outside);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .labelInput{
@@ -55,13 +57,14 @@
     border: none;
     width: 80%;
     height: 100%;
-    padding-left: 0.5rem;
-    border-radius: var(--border-radius-input);
+    padding: 0rem .5rem;
+    border-radius: 5px;
     border: 0.025rem solid var(--bg-gray);
     color: var(--color-gray10);
     background-color: var(--input-bg-white);
+    font-family: inherit;
     font-size: var(--text-md);
-    box-shadow: var(--box-shadow-input);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
 .containerDate{
@@ -76,15 +79,15 @@
     background: none;
     outline: none;
     border: none;
-    width: 50%;
+    width: max-content;
     height: 100%;
-    padding-left: 0.5rem;
-    border-radius: var(--border-radius-input);
+    padding: 0 .5rem;
+    border-radius: 5px;
     border: 0.025rem solid var(--bg-gray);
     color: var(--color-gray10);
     background-color: var(--input-bg-white);
     font-size: var(--text-md);
-    box-shadow: var(--box-shadow-input);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
 .containerDate div{
@@ -166,9 +169,10 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    background-color: var(--bg-gray);
+    background-color: var(--color-approxWhite);
     border: dashed 0.125rem var(--color-gray10);
     border-radius: var(--border-radius);
+    cursor: pointer;
 }
 
 .labelInputFile svg{
@@ -202,11 +206,36 @@
     gap: 2rem;
 }
 
-.labelInputBtn{
-    width: 12rem;
+.containerFiles>a{
+    cursor: pointer;
+    width: 2rem;
     height: 2rem;
-    border-radius: var(--border-radius-btn);
+}
+
+.containerFiles>a>svg{
+    width: 100%;
+    height: 100%;
+}
+
+.submitButton{
+    padding: .5rem 1rem;
+    border-radius: 5px;
     border: none;
     color: var(--color-approxWhite);
     background-color: var(--color-gray20);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+@media (max-width: 67.5rem) {
+    .backgroundNewProcess{
+        width: var(--container-form-HD);
+    }
+
+}
+
+@media (max-width: 40rem) {
+    .backgroundNewProcess{
+        width: var(--container-form-mobile);
+    }
 }

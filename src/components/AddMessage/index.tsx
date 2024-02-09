@@ -69,10 +69,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
 
                 const process = await axios.get(`http://localhost:3333/api/process/${Number(processId)}`,
                     {
-                        withCredentials: true,
-                        headers: {
-                            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                        },
+                        withCredentials: true
                     }
                 )
                 
@@ -82,16 +79,13 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                         'http://localhost:3333/api/revision-response',
                         {
                             "title": "Titulo",
-                            "orientation": newMessage.content,
-                            "revisionResponseDate": new Date(),
+                            "description": newMessage.content,
+                            /* "revisionResponseDate": new Date(), */
                             "userId": process.data.userId,
                             "revisionRequestId": Number(lastMessage.id),
                         },
                         {
-                            withCredentials: true,
-                            headers: {
-                                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                            },
+                            withCredentials: true
                         })
 
                         revisionResponseId = Number(response.data.id)
@@ -112,7 +106,6 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                                         withCredentials: true,
                                         headers: {
                                             'Content-Type': 'multipart/form-data',
-                                            Authorization: `Bearer ${Cookies.get('accessToken')}`,
                                         },
                                     })
                                 } catch (e) {
@@ -131,10 +124,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                             await axios.delete(
                                 `http://localhost:3333/api/revision-response/${revisionResponseId}`,
                                 {
-                                    withCredentials: true,
-                                    headers: {
-                                        Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                                    },
+                                    withCredentials: true
                                 })
                         )
                 }
@@ -148,15 +138,12 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                     'http://localhost:3333/api/revision-request',
                     {
                         "title": "Titulo",
-                        "report": newMessage.content,
-                        "revisionRequestDate": new Date(),
+                        "description": newMessage.content,
+                        /* "revisionRequestDate": new Date(), */
                         "processId": Number(processId)
                     },
                     {
-                        withCredentials: true,
-                        headers: {
-                            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                        },
+                        withCredentials: true
                     }
                 )
 
@@ -177,7 +164,6 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                                 withCredentials: true,
                                 headers: {
                                     'Content-Type': 'multipart/form-data',
-                                    Authorization: `Bearer ${Cookies.get('accessToken')}`,
                                 },
                             })
                         } catch (e) {
@@ -197,10 +183,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                     await axios.delete(
                         `http://localhost:3333/api/revision-request/${revisionRequestId}`,
                         {
-                            withCredentials: true,
-                            headers: {
-                                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                            },
+                            withCredentials: true
                         })
                 )
             }

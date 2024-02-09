@@ -147,36 +147,39 @@ export default function Process({ categories, lawyers }:processProps){
 
                 processId = Number(response.data.id)
                 
-                const files = Array.from(validation.data.file)
                 console.log(processId)
-                for (const file of files) {
-                    let fileName = file.name.replace(/[^a-zA-Z0-9._ ]/g, '')
-                    let newFile = new File([file], fileName, { type: file.type })
-                    console.log(newFile)
-
-                    try {
-                        await axios
-                        .post(
-                            'http://localhost:3333/api/process-document',
-                            {
-                                processId: processId,
-                                file: newFile,
-                            },
-                            {
-                                withCredentials: true,
-                                headers: {
-                                    'Content-Type': 'multipart/form-data',
+                
+                const files = Array.from(validation.data.file)
+                if(files.length > 0) {
+                    for (const file of files) {
+                        let fileName = file.name.replace(/[^a-zA-Z0-9._ ]/g, '')
+                        let newFile = new File([file], fileName, { type: file.type })
+                        console.log(newFile)
+    
+                        try {
+                            await axios
+                            .post(
+                                'http://localhost:3333/api/process-document',
+                                {
+                                    processId: processId,
+                                    file: newFile,
                                 },
-                            }
-                        )
-                    }catch(e){
-                        throw e
+                                {
+                                    withCredentials: true,
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data',
+                                    },
+                                }
+                            )
+                        }catch(e){
+                            throw e
+                        }
+                        
                     }
-                    
-                    toast.success('Processo Criado com sucesso!')
-                    createProcessSuccess = true
-                    return response.data.id
                 }
+                toast.success('Processo criado com sucesso!')
+                createProcessSuccess = true
+                return response.data.id
             } catch (e: any) {
                 console.log(e)
                 toast.error(`Erro ao criar processo! ${e.response.data.message}`)

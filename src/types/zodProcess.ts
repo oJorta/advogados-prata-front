@@ -20,16 +20,16 @@ export const formProcess = z.object({
 export type backProcessDatas = {
     id: number,
     processKey: string,
-    materia: string,
+    matter: string,
     deadline: string,
     distributionDate: string,
     conclusionDate: string,
     name: string,
-    information: string,
+    description: string,
     categoryId: number,
     userId: number,
     status: string,
-    seem: string,
+    legalOpinion: string,
     isUrgent: number
 }
 
