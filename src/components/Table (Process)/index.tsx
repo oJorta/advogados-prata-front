@@ -128,6 +128,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
     }
 
     function typeTable(type: string, col: processProps){
+        console.log(col)
         switch(type){
             case 'default':
             if(col.status != 'Em aguardo' && col.status != 'Concluído'){
@@ -137,7 +138,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
                         <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
-                        <p title={col.materia ? col.materia : '--'}>{col.materia ? col.materia : '--'}</p>
+                        <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
 
                         <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
 
@@ -175,7 +176,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
                             <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
-                            <p title={col.materia ? col.materia : '--'}>{col.materia ? col.materia : '--'}</p>
+                            <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
 
                             <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
 
@@ -214,7 +215,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
                             <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
 
-                            <p title={col.materia ? col.materia : '--'}>{col.materia ? col.materia : '--'}</p>
+                            <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
 
                             <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
 

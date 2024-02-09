@@ -75,7 +75,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         try {
             const { data } = await axios
             .post(
-                'http://localhost:3333/api/auth/login',
+                'http://localhost:3333/api/login',
                 {
                     email: username,
                     password: password,
@@ -125,6 +125,21 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(false)
         setToken(null)
         push('/')
+        /* await axios
+            .post('http://localhost:3333/api/logout', {
+                withCredentials: true,
+            })
+            .then(() => {
+                cookies.remove('accessToken')
+                cookies.remove('refreshToken')
+
+                setUser(null)
+                setIsAdmin(false)
+                setToken(null)
+                push('/')
+            }).catch(e => {
+                console.error(e)
+            }) */
     }
     
     return (

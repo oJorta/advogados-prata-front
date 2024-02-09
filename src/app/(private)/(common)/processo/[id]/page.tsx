@@ -30,6 +30,8 @@ export default function Processo() {
 
     const getProcess = async () => {
         const { data } = await axios
+            .get(`http://localhost:3333/api/process/${processId}`)
+        /* const { data } = await axios
             .get(`http://localhost:3333/api/process/${processId}`, {
                 withCredentials: true,
                 headers: {
@@ -38,28 +40,33 @@ export default function Processo() {
             })
         
         if (user?.role === 'lawyer' && data.userId !== user?.id) back()
+        */
 
         return data
     }
     
     const getRevisionRequests = async () => {
         const { data } = await axios
+        .get('http://localhost:3333/api/revision-requests')
+        /* const { data } = await axios
         .get('http://localhost:3333/api/revision-requests', {
             withCredentials: true,
             headers: {
                 Authorization: `Bearer ${Cookies.get('accessToken')}`,
             },
-        })
+        }) */
         return data
     }
     const getRevisionResponses = async () => {
         const { data } = await axios
-        .get(`http://localhost:3333/api/revision-responses-by-process/${processId}`, {
+        .get(`http://localhost:3333/api/revision-responses?process=${processId}`)
+        /* const { data } = await axios
+        .get(`http://localhost:3333/api/revision-responses?process=${processId}`, {
             withCredentials: true,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        })
+        }) */
         return data
     }
 

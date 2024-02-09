@@ -65,8 +65,13 @@
     height: 216px;
     background-color: #F2F2F2;
     margin: .8rem auto;
-    border-radius: 2px;
     overflow: auto;
+}
+
+.tableBody,
+.monthlyInfoContainer {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .tableBody::-webkit-scrollbar {
@@ -111,7 +116,6 @@
     justify-content: space-between;
     background-color: #F2F2F2;
     margin: .8rem auto;
-    border-radius: 2px;
     overflow: auto;
     padding: .2rem 1rem;
 }

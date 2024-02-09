@@ -43,19 +43,7 @@ export default async function CompleteProcess(){
             return []
         })
 
-        const initValues: credentialInputs = {
-                    processKey: '',
-                    materia: '',
-                    deadline: new Date(new Date().setMilliseconds(new Date().getMilliseconds() - 2)),
-                    name: '',
-                    information: '',
-                    categoryId: 0,
-                    userId: -1,
-                    status: categoriesTypes.Inicio,
-                    isUrgent: false,
-                    file: []
-                }
         return(
-            <Process initialValues={initValues} lawyers={getLawyers} categories={getCategories} />
+            <Process lawyers={getLawyers} categories={getCategories} />
         )
 }

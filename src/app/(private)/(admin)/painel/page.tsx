@@ -25,13 +25,13 @@ export default function Hub(){
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios.get('http://localhost:3333/api/processes', 
-            {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            const { data } = await axios.get(
+                'http://localhost:3333/api/processes',
+                {
+                    withCredentials: true,
                 }
-            })
+            )
+            console.log(data)
             setProcess(data)
             setNearDeadlineProcesses(
                 data.filter((process: processProps) => dateIsNear(process.deadline) && (process.status !== 'Concluído'))
@@ -112,10 +112,7 @@ export default function Hub(){
                     .get(
                         `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","removeLawyers":"false"}`,
                         {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                'Content-Type': 'application/pdf',
-                            },
+                            withCredentials: true,
                             responseType: 'arraybuffer',
                             responseEncoding: 'utf8',
                         }
@@ -137,10 +134,7 @@ export default function Hub(){
                     .get(
                         `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","removeLawyers":"false"}`,
                         {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                'Content-Type': 'application/pdf',
-                            },
+                            withCredentials: true,
                             responseType: 'arraybuffer',
                             responseEncoding: 'utf8',
                         }

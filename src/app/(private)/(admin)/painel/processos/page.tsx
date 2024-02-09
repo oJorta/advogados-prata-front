@@ -52,9 +52,9 @@ export default async function DefaultProcess(){
                         Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
                     },
                 })
-                .then(responde=>{
-                    // console.log(responde)
-                    return responde.data
+                .then(response =>{
+                    return response.data
+
                 })
                 .catch(error=>{
                     console.log(error)

@@ -5,15 +5,15 @@ import { categoriesTypes } from "@/types/enums"
 
 export const formProcess = z.object({
     processKey: z.string().nonempty('O campo de chave do processo precisa ser preenchido').max(30, 'Chave muito extensa'),
-    materia: z.string().optional(),
+    matter: z.string().optional(),
     deadline: z.coerce.date().optional(),
     // deadline: z.coerce.date().min(new Date(), 'Prazo muito curto!').optional(),
     name: z.string().max(45, 'Nome muito extenso').optional(),
-    information: z.string().optional(),
+    description: z.string().optional(),
     categoryId: z.number().positive('Obrigatório a seleção de categoria'),
     userId: z.number({invalid_type_error:'Selecione um Advogado'}).nonnegative('Obrigatório a seleção').optional(),
     status: z.nativeEnum(categoriesTypes),
-    isUrgent: z.boolean(),
+    isUrgent: z.number(),
     file: z.any().array()
 })
 
@@ -30,20 +30,20 @@ export type backProcessDatas = {
     userId: number,
     status: string,
     seem: string,
-    isUrgent: boolean
+    isUrgent: number
 }
 
 export type Data = {
     processKey: string,
-    materia: string | undefined,
+    matter: string | undefined,
     deadline: string | undefined,
     distributionDate: string,
     name: string | undefined,
-    information: string | undefined,
+    description: string | undefined,
     categoryId: number,
     userId: number | undefined,
     status: categoriesTypes,
-    isUrgent: boolean,
+    isUrgent: number,
 }
 
 export type credentialInputs = z.infer< typeof formProcess>

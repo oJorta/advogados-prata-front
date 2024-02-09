@@ -48,7 +48,6 @@ export default function AdvogadoID() {
         role: '',
         specialties: [],
     })
-    const token = Cookies.get('accessToken')
     const previousEmail = useRef('')
     const dropdownBarRef = useRef(null)
     const dropdownRef = useRef(null)
@@ -61,20 +60,14 @@ export default function AdvogadoID() {
             const user = await axios.get(
                 `http://localhost:3333/api/user/${id}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
 
             const processes = await axios.get(
                 'http://localhost:3333/api/processes',
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             setProcesses(processes.data)
@@ -82,21 +75,18 @@ export default function AdvogadoID() {
             const categories = await axios.get(
                 'http://localhost:3333/api/categories',
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
+            setCategories(categories.data)
+
             const specialties = await axios.get(
-                'http://localhost:3333/api/specialties',
+                `http://localhost:3333/api/specialties?user=${user.data.id}`,
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
+            setSpecialties(specialties.data)
             
             previousEmail.current = user.data.email
             setAdvogado({
@@ -105,10 +95,8 @@ export default function AdvogadoID() {
                 phoneNumber: user.data.phoneNumber ? phoneMask(user.data.phoneNumber) : '',
                 email: user.data.email,
                 role: user.data.role,
-                specialties: specialties.data.filter((specialty: any) => specialty.userId === user.data.id).map((specialty: any) => ( { id: specialty.category.id, affinity: specialty.affinity, name: affinityName(specialty.affinity) } )),
+                specialties: specialties.data.map((specialty: any) => ( { id: specialty.categoryId, affinity: specialty.affinity, name: affinityName(specialty.affinity) } )),
             })
-            setCategories(categories.data)
-            setSpecialties(specialties.data.filter((specialty: any) => specialty.userId === user.data.id))
         }
         
         getData()
@@ -131,10 +119,7 @@ export default function AdvogadoID() {
             const { data } = await axios.get(
                 'http://localhost:3333/api/categories',
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             setCategories(data)
@@ -147,10 +132,7 @@ export default function AdvogadoID() {
             const { data } = await axios.get(
                 'http://localhost:3333/api/specialties',
                 {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true
                 }
             )
             setSpecialties(data.filter((specialty: any) => specialty.userId === Number(id)))
@@ -183,23 +165,24 @@ export default function AdvogadoID() {
 
     async function handleAddNewCategory() {
         try {
-            const response = await axios.post('http://localhost:3333/api/category', {
-                name: newCategory,
-            }, {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            const response = await axios.post(
+                'http://localhost:3333/api/category',
+                {
+                    name: newCategory,
                 },
-            })
+                {
+                    withCredentials: true,
+                }
+            )
     
             setCategories([...categories, response.data.name]);
     
-            const { data } = await axios.get('http://localhost:3333/api/users', {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            const { data } = await axios.get(
+                'http://localhost:3333/api/users',
+                {
+                    withCredentials: true,
                 }
-            })
+            )
     
             for (const user of data) {
                 if(user.role !== 'lawyer') continue
@@ -212,10 +195,7 @@ export default function AdvogadoID() {
                             userId: Number(user.id),
                         },
                         {
-                            withCredentials: true,
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
+                            withCredentials: true
                         }
                     )
                 } catch (error) {
@@ -252,10 +232,7 @@ export default function AdvogadoID() {
     async function handleDeleteCategory(id: number) {
         try {
             await axios.delete(`http://localhost:3333/api/category/${id}`, {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true
             })
 
             setCategories(categories.filter((item) => item.id !== id))
@@ -288,19 +265,16 @@ export default function AdvogadoID() {
         
         await axios
         .patch(`http://localhost:3333/api/user/${id}`, userData, {
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true
             })
             .then((response) => {
                 advogado.role === 'admin' && setAdvogado({ ...advogado, specialties: [] })
 
-                const changedSpecialties = advogado.specialties.filter((specialty: any) => specialties.map((specialty: any) => specialty.category.id).includes(specialty.id))
+                const changedSpecialties = advogado.specialties.filter((specialty: any) => specialties.map((specialty: any) => specialty.categoryId).includes(specialty.id))
                 /* const addedSpecialties = advogado.specialties.filter((specialty: any) => !specialties.map((specialty: any) => specialty.category.id).includes(specialty.id))
                 const removedSpecialties = specialties.filter((specialty: any) => !advogado.specialties.map((specialty: any) => specialty.id).includes(specialty.category.id)) */
 
-                setSpecialties(specialties.filter((specialty: any) => advogado.specialties.includes(specialty.category.id)))
+                setSpecialties(specialties.filter((specialty: any) => advogado.specialties.includes(specialty.categoryId)))
 
                 if(changedSpecialties.length === 0) {
                     toast.success('Usuário atualizado com sucesso!')
@@ -310,7 +284,7 @@ export default function AdvogadoID() {
 
                 changedSpecialties.length > 0 &&
                     changedSpecialties.forEach(async (specialty: any) => {
-                        const specialtyId = specialties.find((item: any) => item.category.id === specialty.id).id
+                        const specialtyId = specialties.find((item: any) => item.categoryId === specialty.id).id
 
                         await axios.patch(
                             `http://localhost:3333/api/specialty/${specialtyId}`,
@@ -320,21 +294,20 @@ export default function AdvogadoID() {
                                 categoryId: specialty.id
                             },
                             {
-                                withCredentials: true,
-                                headers: {
-                                    Authorization: `Bearer ${token}`,
-                                },
+                                withCredentials: true
                             }
                         )
                     })
 
                 toast.success('Usuário atualizado com sucesso!')
                 setIsLoading(false)
+                setIsEditing(false)
             })
             .catch((error) => {
                 console.log(error)
                 toast.error(`Erro: ${error.response.data.message}`)
                 setIsLoading(false)
+                setIsEditing(false)
             })
     }
 

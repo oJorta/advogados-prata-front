@@ -1,12 +1,14 @@
 export type processProps = {
     id: number,
     processKey: string,
-    deadline: string,
-    materia: string,
+    matter: string,
     name: string,
-    distributionDate: string,
-    status: string
-    conclusionDate: string,
     userId: number,
+    description: string,
+    deadline: string,
+    distributionDate: string,
+    conclusionDate: string,
+    status: string
     categoryId: number
+    legalOpinion: string
 }

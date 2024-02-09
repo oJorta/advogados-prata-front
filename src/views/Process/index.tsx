@@ -30,11 +30,23 @@ type processProps = {
     idProcess?: string,
     lawyers: lawyerUser[],
     categories: categoryUser[],
-    initialValues: credentialInputs
 }
 
-export default function Process({ initialValues, categories, lawyers }:processProps){
-    const [inputProcess, setInputProcess] = useState<credentialInputs>(initialValues)
+const defaultValues: credentialInputs = {
+    processKey: '',
+    matter: '',
+    deadline: new Date(new Date().setMilliseconds(new Date().getMilliseconds() - 2)),
+    name: '',
+    description: '',
+    categoryId: 0,
+    userId: -1,
+    status: categoriesTypes.Inicio,
+    isUrgent: 0,
+    file: []
+}
+
+export default function Process({ categories, lawyers }:processProps){
+    const [inputProcess, setInputProcess] = useState<credentialInputs>(defaultValues)
     const [opitionalDate, setOpitionalDate] = useState<boolean>(false)
     const [inputLawyer, setInputLawyer] = useState<lawyerUser[]>([])
     const [checkFilesModal, setCheckFilesModal] = useState<boolean>(false)
@@ -45,11 +57,10 @@ export default function Process({ initialValues, categories, lawyers }:processPr
             setInputLawyer([])
         }
         else{
-            axios.get(`http://localhost:3333/api/specialties-by-category/${inputProcess.categoryId}`,          
+            axios.get(`http://localhost:3333/api/specialties?category=${inputProcess.categoryId}`,          
             {
-                headers:{
-                    Authorization: `Bearer ${Cookies.get('accessToken')}`
-                }})
+                withCredentials: true,
+            })
             .then(
                     res=>{
                         let selectedLawyers: lawyerUser[] = []
@@ -59,10 +70,8 @@ export default function Process({ initialValues, categories, lawyers }:processPr
                         setInputLawyer(selectedLawyers)
                     }
                 )
-                .catch(err=>{
-                    if(err.response.status === 404){
-
-                    }
+                .catch(e =>{
+                    console.log(e)
                     setInputLawyer([])
                 })
             }
@@ -70,22 +79,23 @@ export default function Process({ initialValues, categories, lawyers }:processPr
     },[inputProcess.categoryId, lawyers])
     
     const [inputError, setInputError] = useState<inputError>({
-        processKey: {error: false, onFocus: false, textError:''},
-        materia: {error: false, onFocus: false, textError:''},
-        deadline: {error: false, onFocus: false, textError:''},
-        name: {error: false, onFocus: false, textError:''},
-        information: {error: false, onFocus: false, textError:''},
-        categoryId: {error: false, onFocus: false, textError:''},
-        userId: {error: false, onFocus: false, textError:''},
-        file: {error: false, onFocus: false, textError:''},
+        processKey: { error: false, onFocus: false, textError: '' },
+        matter: { error: false, onFocus: false, textError: '' },
+        deadline: { error: false, onFocus: false, textError: '' },
+        name: { error: false, onFocus: false, textError: '' },
+        description: { error: false, onFocus: false, textError: '' },
+        categoryId: { error: false, onFocus: false, textError: '' },
+        userId: { error: false, onFocus: false, textError: '' },
+        file: { error: false, onFocus: false, textError: '' },
     })
 
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>){
         ev.preventDefault()
         const validation = formProcess.safeParse(inputProcess)
+        console.log(inputProcess)
+        console.log(Array.from(validation.data.file))
 
         if(!validation.success){
-
             let setError: inputError = inputError
 
             validation.error.issues.map(el=>{
@@ -97,83 +107,88 @@ export default function Process({ initialValues, categories, lawyers }:processPr
             setInputError(setError)
         }
         else{
-
             const data: Data = {
                 processKey: validation.data.processKey,
                 name: validation.data.name,
-                materia: validation.data.materia,
+                matter: validation.data.matter,
                 distributionDate: new Date().toISOString().substring(0, 10),
-                deadline: validation.data.deadline?.toISOString().substring(0, 10),
-                information: validation.data.information,
+                deadline: validation.data.deadline
+                    ?.toISOString()
+                    .substring(0, 10),
+                description: validation.data.description,
                 userId: validation.data.userId,
                 status: validation.data.status,
                 isUrgent: validation.data.isUrgent,
                 categoryId: validation.data.categoryId,
             }
 
-            for(let val in data){
-                if(data[val as keyof Data] === ''){
+            for (let val in data) {
+                if (data[val as keyof Data] === '') {
                     delete data[val as keyof Data]
                 }
             }
 
-            if(opitionalDate === false){
+            if (opitionalDate === false) {
                 delete data.deadline
             }
 
-            if(validation.data.userId === 0){
+            if (validation.data.userId === 0) {
                 delete data.userId
             }
+            
             let createProcessSuccess: boolean = false
-            const id: number = await axios.post('http://localhost:3333/api/process',
-            data,
-            {
-                headers:{
-                    Authorization: `Bearer ${Cookies.get('accessToken')}`
-                }})
-                .then(response=>{
-                    if(response.status === 201){
-                        toast.success('Processo Criado com sucesso!')
-                        createProcessSuccess = true
-                        return response.data.id
-                    }
-
+            let processId = null
+            try {
+                const response = await axios
+                .post('http://localhost:3333/api/process', data,
+                {
+                    withCredentials: true,
                 })
-                .catch(error=>{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-                    toast.error(error.response.data.message)
-                })
-                let allFileSuccess: number = 0
-                for(const file of validation.data.file as File[]){
 
-                    await axios.post('http://localhost:3333/api/process-documents',
-                        {
-                            processId: id,
-                            file: file,
-                            
-                        },
-                        {headers:{
-                            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-                            'Content-Type': 'multipart/form-data'
-                        }}
-                        )
-                        .then(response=>{
-                            if(response.status === 201){
-                                toast.success('Arquivo Criado com sucesso!')
-                                allFileSuccess +=1
+                processId = Number(response.data.id)
+                
+                const files = Array.from(validation.data.file)
+                console.log(processId)
+                for (const file of files) {
+                    let fileName = file.name.replace(/[^a-zA-Z0-9._ ]/g, '')
+                    let newFile = new File([file], fileName, { type: file.type })
+                    console.log(newFile)
+
+                    try {
+                        await axios
+                        .post(
+                            'http://localhost:3333/api/process-document',
+                            {
+                                processId: processId,
+                                file: newFile,
+                            },
+                            {
+                                withCredentials: true,
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                },
                             }
-                        })
-                        .catch(error=>{
-                            console.log(error)
-                            toast.error(error.response.data.message)
-                        })
-                    
-                    
+                        )
+                    }catch(e){
+                        throw e
                     }
-                    if(createProcessSuccess){
-                        window.location.reload()
-                    }
+                    
+                    toast.success('Processo Criado com sucesso!')
+                    createProcessSuccess = true
+                    return response.data.id
+                }
+            } catch (e: any) {
+                console.log(e)
+                toast.error(`Erro ao criar processo! ${e.response.data.message}`)
 
+                processId && axios.delete(`http://localhost:3333/api/process/${processId}`, { withCredentials: true }).then(res => console.log(res)).catch(e => console.log(e))
             }
+
+            
+            if (createProcessSuccess) {
+                window.location.reload()
+            }
+        }
 
     }
 
@@ -205,20 +220,20 @@ export default function Process({ initialValues, categories, lawyers }:processPr
 
 
                         {/*
-                        MATERIA
+                        matter
                         */}
 
                         <label className={styles.labelInput}>
                             <span>Matéria:</span>
                         <input type="text"
-                        onFocus={()=>setInputError({... inputError, materia:{error: false, onFocus: true, textError: ''}})} 
+                        onFocus={()=>setInputError({... inputError, matter:{error: false, onFocus: true, textError: ''}})} 
 
-                        value={inputProcess.materia} onChange={(el : React.FormEvent<HTMLInputElement>)=>{
-                            setInputProcess({... inputProcess, materia: el.currentTarget.value})
+                        value={inputProcess.matter} onChange={(el : React.FormEvent<HTMLInputElement>)=>{
+                            setInputProcess({... inputProcess, matter: el.currentTarget.value})
                         }} 
-                        style={addStyle(inputError.materia.error)}/>
+                        style={addStyle(inputError.matter.error)}/>
 
-                        {inputError.materia.error && <InputError text={inputError.materia.textError} style={true} />}
+                        {inputError.matter.error && <InputError text={inputError.matter.textError} style={true} />}
                         </label>
                         
                         {/*
@@ -273,14 +288,14 @@ export default function Process({ initialValues, categories, lawyers }:processPr
                         <label className={styles.labelInput}>
                             <span>Observação:</span>           
                         <textarea 
-                        onFocus={()=>setInputError({... inputError, information:{error: false, onFocus: true, textError: ''}})}
+                        onFocus={()=>setInputError({... inputError, description:{error: false, onFocus: true, textError: ''}})}
                         
-                        value={inputProcess.information} onChange={(el : React.FormEvent<HTMLTextAreaElement>)=>{
-                            setInputProcess({... inputProcess, information: el.currentTarget.value})
+                        value={inputProcess.description} onChange={(el : React.FormEvent<HTMLTextAreaElement>)=>{
+                            setInputProcess({... inputProcess, description: el.currentTarget.value})
                         }} 
-                        style={addStyle(inputError.information.error)}/>
+                        style={addStyle(inputError.description.error)}/>
 
-                        {inputError.information.error && <InputError text={inputError.information.textError} style={true} />}
+                        {inputError.description.error && <InputError text={inputError.description.textError} style={true} />}
                         </label>
 
                         {/*
@@ -354,14 +369,20 @@ export default function Process({ initialValues, categories, lawyers }:processPr
                             <span>É urgente?</span>
                             <div className={styles.containerCheckboxStatus} style={{width:'60%'}}>
                                 <div className={styles.labelCheckbox} >
-                                    <input type="button" style={inputCheckedUrgent(true, inputProcess.isUrgent)} onClick={()=>{
-                                        setInputProcess({... inputProcess, isUrgent: true})}}/>
+                                    <input
+                                        type="button"
+                                        style={inputCheckedUrgent(true, !!(inputProcess.isUrgent))}
+                                        onClick={()=>{ setInputProcess({... inputProcess, isUrgent: 1}) }}
+                                    />
                                     <span>Sim</span>
                                 </div>
 
                                 <div className={styles.labelCheckbox}>
-                                    <input type="button" style={inputCheckedUrgent(false, inputProcess.isUrgent)} onClick={()=>{
-                                        setInputProcess({... inputProcess, isUrgent: false})}}/>
+                                    <input
+                                        type="button"
+                                        style={inputCheckedUrgent(false, !!(inputProcess.isUrgent))} 
+                                        onClick={()=>{ setInputProcess({... inputProcess, isUrgent: 0})} }
+                                    />
                                     <span>Não</span>
                                 </div>
                             </div>              

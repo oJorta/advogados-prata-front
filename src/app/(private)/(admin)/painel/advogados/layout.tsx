@@ -8,14 +8,12 @@ import AddCategoryInput from "@/components/AddCategoryInput"
 import { AiOutlineUserAdd } from 'react-icons/ai'
 import { MdAddToPhotos } from "react-icons/md";
 
-import styles from './layout.module.css'
-
 export const PageContext = createContext(function setPage(page: number) {})
 
 export default function AdvogadosLayout({ children, add }: { children: ReactNode, add: ReactNode }) {
   const path = usePathname()
   const [page, setPage] = useState<number>(0)
-  const [categoryModalIsOpen, setCategoryModalIsOpen] = useState(true)
+  const [categoryModalIsOpen, setCategoryModalIsOpen] = useState(false)
   const pages = [children, add];
 
   const navbar = [

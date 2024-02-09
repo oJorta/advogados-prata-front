@@ -1,28 +1,24 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 
 
 export async function addNewCategory(newCategory: string) {
-    const token = Cookies.get('accessToken');
 
     try {
-        const response = await axios.post('http://localhost:3333/api/category', {
-            name: newCategory,
-        }, {
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
+        const response = await axios.post(
+            'http://localhost:3333/api/category',
+            {
+                name: newCategory,
             },
-        })
+            {
+                withCredentials: true,
+            }
+        )
 
         /* setCategories([...categories, response.data.name]); */
 
         const { data } = await axios.get('http://localhost:3333/api/users', {
             withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
         })
 
         for (const user of data) {
@@ -37,9 +33,6 @@ export async function addNewCategory(newCategory: string) {
                     },
                     {
                         withCredentials: true,
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
                     }
                 )
             } catch (error) {

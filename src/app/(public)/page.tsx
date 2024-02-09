@@ -37,7 +37,6 @@ export default function Login() {
         .email('E-mail inválido.'),
 
         password: z.string().nonempty('O campo precisa ser preenchido.')
-        .min(5,'A senha deve possuir mais de 5 caracteres.')
     })
 
     const user: Credentials = {
@@ -83,11 +82,14 @@ export default function Login() {
             setLoading(false)
         }
         else{
-            await auth.login({username: user.username, password: user.password}).then((response)=>{
-                toast.success('Login efetuado com sucesso.')
-            }).catch((e)=>{
-                setLoading(false)
-            })
+            await auth
+                .login({ username: user.username, password: user.password })
+                .then((response) => {
+                    toast.success('Login efetuado com sucesso.')
+                })
+                .catch((e) => {
+                    setLoading(false)
+                })
         }
     }
 

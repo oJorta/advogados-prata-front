@@ -1,9 +1,8 @@
-"use client"
+'use client'
 import axios from 'axios'
 import styles from './page.module.css'
 import CardAdvogado from '@/components/CardAdvogado'
 import { useEffect, useState } from 'react'
-import Cookies from 'js-cookie'
 import toast from 'react-hot-toast'
 
 type Advogado = {
@@ -23,8 +22,6 @@ type Process = {
 export default function Advogados() {
     const [advogados, setAdvogados] = useState([] as Advogado[])
     const [processes, setProcesses] = useState([] as Process[])
-    /* const token = document.cookie.split('=')[1] */
-    const token = Cookies.get('accessToken')
 
     useEffect(() => {
         getUsers()
@@ -36,9 +33,6 @@ export default function Advogados() {
             'http://localhost:3333/api/users',
             {
                 withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
             }
         )
         setAdvogados(data)
@@ -46,12 +40,9 @@ export default function Advogados() {
 
     async function getProcesses() {
         const { data } = await axios.get(
-            'http://localhost:3333/api/processes',
+            'http://localhost:3333/api/processes' ,
             {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true
             }
         )
         setProcesses(data)
@@ -60,43 +51,49 @@ export default function Advogados() {
     function filterProcesses(id: number, status: string) {
         switch (status) {
             case 'Concluído':
-                return processes.filter((process) => process.userId === id && process.status === 'Concluído')
+                return processes.filter(
+                    (process) =>
+                        process.userId === id && process.status === 'Concluído'
+                )
             default:
-                return processes.filter((process) => process.userId === id && process.status !== 'Concluído')
+                return processes.filter(
+                    (process) =>
+                        process.userId === id && process.status !== 'Concluído'
+                )
         }
     }
 
     async function handleDeleteUser(id: number) {
         await axios
-        .delete(`http://localhost:3333/api/user/${id}`, {
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then((response) => {
-
-            toast.success('Usuário removido com sucesso!')
-        })
-        .catch((error) => {
-            console.log(error)
-            toast.error('Erro ao remover usuário!')
-        })
+            .delete(`http://localhost:3333/api/user/${id}`, {
+                withCredentials: true,
+            })
+            .then((response) => {
+                toast.success('Usuário removido com sucesso!')
+            })
+            .catch((error) => {
+                console.log(error)
+                toast.error('Erro ao remover usuário!')
+            })
         getUsers()
     }
-    
+
     return (
         <div className={styles.container}>
             <div className={styles.gridContainer}>
-                {advogados.map(advogado => {
+                {advogados.map((advogado) => {
                     return (
-                        <CardAdvogado 
+                        <CardAdvogado
                             key={advogado.id}
                             id={advogado.id}
                             nome={advogado.name}
                             oab={advogado.nroOAB}
-                            processosAndamento={filterProcesses(advogado.id, 'Andamento').length}
-                            processosConcluidos={filterProcesses(advogado.id, 'Concluído').length}
+                            processosAndamento={
+                                filterProcesses(advogado.id, 'Andamento').length
+                            }
+                            processosConcluidos={
+                                filterProcesses(advogado.id, 'Concluído').length
+                            }
                             onDelete={handleDeleteUser}
                         />
                     )
