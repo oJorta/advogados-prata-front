@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import axios from 'axios'
 
 //Components
-import Table from "@/components/Table (Process)"
+import Table from "@/components/AdminProcessTable"
 
 //types
 import { processProps } from "@/types/processTableAtt"
@@ -21,37 +21,6 @@ export default async function DefaultProcess(){
                 })
                 .then(response => {
                     return response.data
-                })
-                .catch(error=> {
-                    console.log(error)
-                    return []
-                })
-
-    const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/api/users',                 
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
-                        Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
-                    },
-                })
-                .then(response => {
-                    return response.data as lawyerUser[]
-                })
-                .catch(error=> {
-                    console.log(error)
-                    return []
-                })
-
-    const getCategories: categoryUser[] = await axios.get('http://localhost:3333/api/categories',                 
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
-                        Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
-                    },
-                })
-                .then(response => {
-                    return response.data
-
                 })
                 .catch(error=> {
                     console.log(error)

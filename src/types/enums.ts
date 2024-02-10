@@ -25,3 +25,14 @@ export enum sort {
     ConclusionDate = 'conclusionDate',
     Category = 'category',
 }
+
+export enum SortBy {
+    PROCESSO = 'processKey',
+    MATERIA = 'matter',
+    CLIENTE = 'name',
+    ADVOGADO = 'lawyer',
+    CATEGORIA = 'categoryId',
+    PRAZO = 'deadline',
+    CONCLUSÃO = 'conclusionDate',
+    STATUS = 'status'
+  }

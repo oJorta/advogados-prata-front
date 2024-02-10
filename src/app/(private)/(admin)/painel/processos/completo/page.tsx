@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import axios from 'axios'
 
 //Components
-import Table from '@/components/Table (Process)'
+import Table from '@/components/AdminProcessTable'
 
 //Types
 import { processProps } from '@/types/processTableAtt'
@@ -15,36 +15,6 @@ const Header: Array<string> = ['Processo','Matéria','Cliente','Advogado','Concl
 
 export default async function CompleteProcess(){
     const getData: processProps[] = await axios.get('http://localhost:3333/api/processes?withUser=true&withCategory=true',                 
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
-                        Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
-                    },
-                })
-                .then(response => {
-                    return response.data
-                })
-                .catch(error => {
-                    console.log(error)
-                    return []
-                })
-
-            const getLawyers: lawyerUser[] = await axios.get('http://localhost:3333/api/users',                 
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
-                        Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
-                    },
-                })
-                .then(response => {
-                    return response.data
-                })
-                .catch(error => {
-                    console.log(error)
-                    return []
-                })
-
-            const getCategories: categoryUser[] = await axios.get('http://localhost:3333/api/categories',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,

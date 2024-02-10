@@ -7,21 +7,18 @@ import toast from 'react-hot-toast'
 //Icons
 import { AiOutlineSearch, AiOutlineComment, AiOutlineEdit, AiFillBell } from 'react-icons/ai'
 import { RiDeleteBin6Fill, RiCheckboxCircleLine } from 'react-icons/ri'
-import { MdOutlineSelectAll, MdOutlineDeselect } from 'react-icons/md'
 
 //Types
 import { processProps } from '@/types/processTableAtt'
-import { categoryUser, lawyerUser } from '@/types/atributes'
 import { stateModal } from '@/types/modal'
 import { trash } from '@/types/trash'
+import { SortBy } from '@/types/enums'
 
 //Styles
-import obsStatus from '@/styles/status'
 import ModalDel from '../Modal (Delete)'
 import ModalFree from '../Modal (Free)'
 
 //Functions
-import { IdforName } from '@/functions/filter'
 import { isEmptyObj } from '@/functions/isEmpty'
 import { pathnameStatus, pathnames } from '@/functions/status'
 import getStatusStyle from '@/functions/getProcessStatusStyle'
@@ -35,6 +32,10 @@ type tableProps = {
 export default function ProcessTable({tableHeaders, type, tableData}: tableProps){
     const pathname = usePathname()
     const [query, setQuery] = useState<string>('')
+    const [sort, setSort] = useState<{
+        collumn: SortBy | undefined
+        order: 'asc' | 'desc'
+    }>({ collumn: SortBy.PRAZO, order: 'asc' })
     const [data, setData] = useState<Array<processProps>>(tableData)
     const [trash, setTrash] = useState<trash>({})
     const [openModalDel, setOpenModalDel] = useState<stateModal>({open: false, id: []})
@@ -42,37 +43,42 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
     const { push } = useRouter()
 
     useEffect(() => {
-        filterTable(type)
-        console.log(data)
+        filterData(tableData, type)
+        sortTable(sort.collumn, sort.order)
     }, [])
 
-    useEffect(()=>{
-        if(query !== ''){
-            setData(data.filter((row) => row.processKey.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())))
-        }
-        /* if(query === ''){
-            setData(tableData)
-        }
-        else{
-            setData(tableData.filter((row) => row.processKey.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())))
-        } */
+    useEffect(() => {
+        sortTable(sort.collumn, sort.order)
+    }, [sort])
 
+    useEffect(() => {
+        if (query === '') {
+            filterData(tableData, type)
+            sortTable(sort.collumn, sort.order)
+        } else {
+            const filteredData = tableData.filter((process) => {
+                return Object.values(process).some((value) => {
+                    return String(value).toLowerCase().includes(query.toLowerCase())
+                })
+            })
+            filterData(filteredData, type)
+        }
     }, [query])
 
-    function selectedProcess(el: React.ChangeEvent<HTMLInputElement>){
+    function selectProcess(el: React.ChangeEvent<HTMLInputElement>) {
+        const value = el.currentTarget.value;
+        const updatedTrash = { ...trash };
 
-        if(!trash[el.currentTarget.value]){
-            setTrash({...trash, [el.currentTarget.value]: Number(el.currentTarget.value)})
+        if (updatedTrash[value]) {
+            delete updatedTrash[value];
+        } else {
+            updatedTrash[value] = Number(value);
         }
-        else{
-            delete trash[el.currentTarget.value]
-        }
+
+        setTrash(updatedTrash);
     }
 
-
-//  Funções para os botões     
-
-    function selectAllProcesses(el: React.MouseEvent<HTMLButtonElement>){
+    function selectAllProcesses(){
         let ids: number[] = []
         if(isEmptyObj(trash)){
             data.map(row=>{
@@ -103,7 +109,7 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
         }
     }
 
-    function deleteFunction(el: React.MouseEvent<HTMLButtonElement>){
+    function deleteProcesses(){
 
         if(Object.values(trash).length !== 0){
             setOpenModalDel({open: !openModalDel.open, id: Object.values(trash)})
@@ -113,7 +119,7 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
         }
     }
     
-    function freeFunction(el: React.MouseEvent<HTMLButtonElement>){
+    function distributeProcesses(){
         
         if(Object.values(trash).length !== 0){
             setOpenModalFree({open: !openModalFree.open, id: Object.values(trash)})
@@ -122,9 +128,7 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
             toast.error('Nenhum processo selecionado!')
         }
     }
-
-// ------------------------------------------------------------------------------------------
-    
+  
     function setInclusion(date: string){
         if(parseInt(date.substring(5, 7)) <= parseInt(new Date().toISOString().substring(5, 7))){
             return `há ${parseInt(new Date().toISOString().substring(8, 10)) - parseInt(date.substring(8, 10))} dia(s)`
@@ -187,153 +191,58 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
         }
     }
 
-    /* function typeTable(type: string, col: processProps){
-        switch(type){
-            case 'default':
-            if(col.status != 'Em aguardo' && col.status != 'Concluído'){
-                return(
-                    <div key={col.id}>
-                        <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
-
-                        <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
-
-                        <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
-
-                        <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
-
-                        <p title={IdforName(col.userId, dbLawyer)}>{IdforName(col.userId, dbLawyer)}</p>
-
-                        <p title={IdforName(col.categoryId, dbCategory)}>{IdforName(col.categoryId, dbCategory)}</p>
-
-                        <p>
-                            {col.deadline ? `${col.deadline.substring(8, 10)}/
-                                ${col.deadline.substring(5, 7)}
-                                /${col.deadline.substring(0, 4)}`: '--'}</p>
-
-                        <p title={col.status} style={obsStatus(col.status)}>{col.status}</p>
-
-                        <div className={styles.controlProcess}>
-                            <button onClick={()=>push(`/processo/${col.id}`)}>
-                                <AiOutlineComment />
-                            </button>
-                            <button onClick={()=>push(`/painel/processos/${col.id}`)}>
-                                <AiOutlineEdit />
-                            </button>
-                        </div>
-                    </div>
-                )
-            }
-            else{
-                return null
-            }
-
-            case 'waiting':
-                if(col.status === 'Em aguardo'){                      
-                    return(
-                        <div key={col.id} >
-                            <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
-
-                            <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
-
-                            <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
-
-                            <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
-
-                            <p title={IdforName(col.categoryId, dbCategory)}>{IdforName(col.categoryId, dbCategory)}</p>
-
-                            <p>
-                            {col.deadline ? `${col.deadline.substring(8, 10)}/
-                                ${col.deadline.substring(5, 7)}
-                                /${col.deadline.substring(0, 4)}`: '--'}</p>
-
-                            <p>{setInclusion(col.distributionDate)}</p>
-
-                            <p title={col.status} style={obsStatus(col.status)}>{col.status}</p>
-
-                            <div className={styles.controlProcess}>
-                                <button onClick={()=>push(`/processo/${col.id}`)}>
-                                    <AiOutlineComment />
-                                </button>
-                                <button onClick={()=>push(`/painel/processos/${col.id}`)}>
-                                    <AiOutlineEdit />
-                                </button>
-                            </div>
-                        </div>
-                    )
-                }
-                else{
-                    return null
-                }
-
-
-            case 'complete':
-                if(col.status === 'Concluído'){
-                    return(
-                        <div key={col.id}>
-                            <input value={col.id} onChange={selectedProcess} type="checkbox" style={{width: '2rem'}} checked={!trash[col.id.toString()] ? false : true } />
-
-                            <p className={styles.processKeyId} title={col.processKey}>{col.processKey}</p>
-
-                            <p title={col.matter ? col.matter : '--'}>{col.matter ? col.matter : '--'}</p>
-
-                            <p title={col.name? col.name : '--'}>{col.name? col.name : '--'}</p>
-
-                            <p>{dbLawyer.map(el=>{
-                                if(el.id == col.userId){
-                                    return el.name
-                                }
-                            })}</p>
-
-                            <p>{col.conclusionDate ? col.conclusionDate.substring(0, 10) : 'Incompleto'}</p>
-
-                            <div className={styles.controlProcess}>
-                                <button onClick={()=>push(`/processo/${col.id}`)}>
-                                    <AiOutlineComment />
-                                </button>
-                                <button onClick={()=>push(`/painel/processos/${col.id}`)}>
-                                    <AiOutlineEdit />
-                                </button>
-                            </div>
-                        </div>
-                    )
-                }
-                else{
-                    return null
-                }
-        }
-    } */
-
-    function filterTable(type: string) {
+    function filterData(data: processProps[], type: string) {
         switch(type) {
             case 'awaiting':
-                setData(tableData.filter((process) => process.status === 'Em aguardo'))
+                setData(data.filter((process: { status: string }) => process.status === 'Em aguardo'))
                 break
             case 'complete':
-                setData(tableData.filter((process) => process.status === 'Concluído'))
+                setData(data.filter((process: { status: string }) => process.status === 'Concluído'))
                 break
             default:
-                setData(tableData.filter((process) => process.status !== 'Concluído' && process.status !== 'Em aguardo'))
+                setData(data.filter((process: { status: string }) => process.status !== 'Concluído' && process.status !== 'Em aguardo'))
                 break
         }
     }
 
+    function sortTable(sortBy: SortBy = SortBy.PRAZO, order: 'asc' | 'desc' = 'asc') {
+        setData((data) => data.sort((a, b) => {
+            switch (sortBy) {
+                case 'deadline':
+                    /* a.deadline === null && b.processKey !== null && -1
+
+                    a.deadline !== null && b.processKey === null && 1 */
+
+                    if (order === 'asc') {
+                        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+                    }
+                    return new Date(b.deadline).getTime() - new Date(a.deadline).getTime()
+                
+                case 'lawyer':
+                    if (order === 'asc') {
+                        return String(a.user?.name).localeCompare(String(b.user?.name))
+                    }
+                    return String(b.user?.name).localeCompare(String(a.user?.name))
+                default:
+                    if (order === 'asc') {
+                        return String(a[sortBy as keyof processProps]).localeCompare(String(b[sortBy as keyof processProps]))
+                    }
+                    return String(b[sortBy as keyof processProps]).localeCompare(String(a[sortBy as keyof processProps]))
+            }
+        }))
+    }
+
     return (
         <>
-            <ModalDel isOpen={openModalDel} setOpen={setOpenModalDel}/>
-            <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree}/>
+            <ModalDel isOpen={openModalDel} setOpen={setOpenModalDel} />
+            <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree} />
             <div className={styles.optionsContainer}>
                 {pathname === '/painel/processos/aguardo' && (
-                    <button
-                        className={styles.freeBtn}
-                        onClick={freeFunction}
-                    >
+                    <button className={styles.freeBtn} onClick={distributeProcesses}>
                         <RiCheckboxCircleLine />
                     </button>
                 )}
-                <button
-                    className={styles.deleteBtn}
-                    onClick={deleteFunction}
-                >
+                <button className={styles.deleteBtn} onClick={deleteProcesses}>
                     <RiDeleteBin6Fill />
                 </button>
             </div>
@@ -346,18 +255,54 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
                                     <input
                                         type="checkbox"
                                         onClick={selectAllProcesses}
-                                        {...(isEmptyObj(trash) && {checked: false})}
-                                        style={{ width: '1rem', height: '1rem' }}
+                                        {...(isEmptyObj(trash) && {
+                                            checked: false,
+                                        })}
+                                        style={{
+                                            width: '1rem',
+                                            height: '1rem',
+                                        }}
                                     />
                                 </th>
+
                                 {tableHeaders.map((th, index) => (
                                     <th
                                         key={index}
                                         className={styles.th}
+                                        onClick={() => {
+                                            setSort({
+                                                collumn: SortBy[th.toLocaleUpperCase() as keyof typeof SortBy],
+                                                order:
+                                                    sort.order === 'asc'
+                                                        ? 'desc'
+                                                        : 'asc',
+                                            })
+                                        }}
                                     >
+                                        {sort.collumn === SortBy[th.toLocaleUpperCase() as keyof typeof SortBy] && (sort.order === 'asc' ? '▲' : '▼')}
                                         {th}
                                     </th>
                                 ))}
+
+                                <th>
+                                    <label
+                                        htmlFor="searchInput"
+                                        className={styles.tableSearch}
+                                    >
+                                        <input
+                                            id="searchInput"
+                                            type="text"
+                                            value={query}
+                                            onChange={(
+                                                el: React.FormEvent<HTMLInputElement>
+                                            ) => {
+                                                setQuery(el.currentTarget.value)
+                                            }}
+                                            autoComplete='off'
+                                        />
+                                        <AiOutlineSearch />
+                                    </label>
+                                </th>
                             </tr>
                         </thead>
 
@@ -368,7 +313,7 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
                                         <td className={styles.td}>
                                             <input
                                                 value={process.id}
-                                                onChange={selectedProcess}
+                                                onChange={selectProcess}
                                                 type="checkbox"
                                                 style={{
                                                     width: '1rem',
@@ -422,50 +367,4 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
             </div>
         </>
     )
-    {/* <>
-        <ModalDel isOpen={openModalDel} setOpen={setOpenModalDel}/>
-        <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree}/>
-        <section className={styles.containerProcess}>
-            <div className={styles.backgroundTrash}>
-                <button className={styles.selectAllBtn} onClick={selectAllProcesses}>
-                    {!isEmptyObj(trash) ?
-                    <MdOutlineDeselect />
-                    :
-                    <MdOutlineSelectAll />
-                    }
-                </button>
-                {
-                    pathname !== '/painel/processos' ?
-                <button className={styles.freeBtn} onClick={freeFunction}>
-                    <RiCheckboxCircleLine />
-                </button> : <></>
-                }
-                <button className={styles.deleteBtn} onClick={deleteFunction}>
-                    <RiDeleteBin6Fill />
-                </button>
-            </div>
-            <div className={styles.containerTable}>
-                <header className={styles.headerTable}>
-                    <div style={{width: '2rem'}}></div>
-                    <ul className={styles.titleCol}>
-                        {tableHeaders.map((li, index)=>{
-                            return <span key={index}><strong>{li}</strong></span>
-                        })}
-                    <label htmlFor='searchInput' className={styles.tableSearch}>
-                        <input id='searchInput' type="text" value={query} onChange={(el : React.FormEvent<HTMLInputElement>)=>{
-                            setQuery(el.currentTarget.value)
-                        }}  />
-                        <AiOutlineSearch />
-                    </label>
-                    </ul>
-                </header>
-                <hr />
-                <div className={styles.tableCol}>
-                {data.map((col)=>{
-                    return typeTable(type, col)
-                })}
-                </div>
-            </div>
-        </section>
-        </> */}
 }
