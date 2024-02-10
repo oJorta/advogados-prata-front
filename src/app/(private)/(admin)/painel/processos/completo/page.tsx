@@ -10,28 +10,35 @@ import { processProps } from '@/types/processTableAtt'
 import { lawyerUser, categoryUser } from '@/types/atributes'
 
 
-const Header: Array<string> = ['Processo','Matéria','Cliente','Advogado','Conclusão']
+const HEADERS: Array<string> = ['Processo','Matéria','Cliente','Advogado','Conclusão']
 
 
 export default async function CompleteProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes?withUser=true&withCategory=true',                 
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
-                        Cookie:`accessToken=${cookies().get('accessToken')?.value}`,
-                    },
-                })
-                .then(response => {
-                    return response.data
-                })
-                .catch(error => {
-                    console.log(error)
-                    return []
-                })
+    const getData: processProps[] = await axios
+        .get(
+            'http://localhost:3333/api/processes?withUser=true&withCategory=true',
+            {
+                headers: {
+                    Authorization: `Bearer ${
+                        cookies().get('accessToken')?.value
+                    }`,
+                    Cookie: `accessToken=${
+                        cookies().get('accessToken')?.value
+                    }`,
+                },
+            }
+        )
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
 
         return (
             <Table
-                tableHeaders={Header}
+                tableHeaders={HEADERS}
                 type="complete"
                 tableData={getData}
             />

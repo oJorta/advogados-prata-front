@@ -4,14 +4,14 @@ import styles from './page.module.css'
 import axios from 'axios'
 
 //Components
-import Table from '@/components/Table (Lawyer)'
+import Table from '@/components/LawyerProcessTable'
 
 //Types
 import { processProps } from '@/types/processTableAtt'
 import { lawyerUser } from '@/types/atributes'
 
 
-const Header: Array<string> = ['Processo','Cliente','Matéria','Data']
+const HEADERS: Array<string> = ['Processo','Cliente','Matéria','Data']
 
 
 export default async function CompleteProcess(){
@@ -31,6 +31,10 @@ export default async function CompleteProcess(){
                 })
 
         return(
-            <Table head={Header} type='complete' dbData={getData} />
+            <Table
+                tableHeaders={HEADERS}
+                type='complete'
+                tableData={getData}
+            />
         )
 }

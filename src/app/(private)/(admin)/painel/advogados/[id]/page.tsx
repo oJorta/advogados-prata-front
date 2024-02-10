@@ -13,7 +13,7 @@ import { BiEdit } from 'react-icons/bi'
 import { phoneMask, cpfMask } from '@/functions/masks'
 import { affinityName } from '@/functions/affinity'
 import { processProps } from '@/types/processTableAtt'
-import Table from '@/components/Table (Lawyer)'
+import Table from '@/components/LawyerProcessTable'
 
 import { MdOutlineArrowDropDown } from 'react-icons/md'
 import { IoMdAdd } from 'react-icons/io'

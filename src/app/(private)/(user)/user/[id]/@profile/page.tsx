@@ -50,9 +50,6 @@ export default function AdvogadoID() {
                 `http://localhost:3333/api/user/${id}`,
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
 
@@ -60,9 +57,6 @@ export default function AdvogadoID() {
                 'http://localhost:3333/api/processes',
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
             setProcesses(processes.data)
@@ -71,18 +65,12 @@ export default function AdvogadoID() {
                 'http://localhost:3333/api/categories',
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
             const specialties = await axios.get(
-                'http://localhost:3333/api/specialties',
+                `http://localhost:3333/api/specialties?user=${user.data.id}&withCategory=true`,
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
 
@@ -92,7 +80,7 @@ export default function AdvogadoID() {
                 phoneNumber: phoneMask(user.data.phoneNumber),
                 email: user.data.email,
                 role: user.data.role,
-                specialties: specialties.data.filter((specialty: any) => specialty.userId === user.data.id).map((specialty: any) => ( { id: specialty.category.id, affinity: specialty.affinity, name: affinityName(specialty.affinity) } )),
+                specialties: specialties.data.map((specialty: any) => ( { id: specialty.category.id, affinity: specialty.affinity, name: affinityName(specialty.affinity) } )),
             })
             setCategories(categories.data)
             setSpecialties(specialties.data.filter((specialty: any) => specialty.userId === user.data.id))
@@ -118,9 +106,6 @@ export default function AdvogadoID() {
                 'http://localhost:3333/api/categories',
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
             setCategories(data)
@@ -134,9 +119,6 @@ export default function AdvogadoID() {
                 'http://localhost:3333/api/specialties',
                 {
                     withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 }
             )
             setSpecialties(data.filter((specialty: any) => specialty.userId === Number(id)))

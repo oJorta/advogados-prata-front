@@ -3,12 +3,12 @@ import { cookies } from 'next/headers'
 import axios from 'axios'
 
 //Components
-import Table from "@/components/Table (Lawyer)"
+import Table from "@/components/LawyerProcessTable"
 
 //types
 import { processProps } from "@/types/processTableAtt"
 
-const Header: Array<string> = ['Processo','Prazo','Matéria','Cliente','Status']
+const HEADERS: Array<string> = ['Processo','Prazo','Matéria','Cliente','Status']
 
 
 export default async function DefaultProcess(){
@@ -28,6 +28,9 @@ export default async function DefaultProcess(){
                 })
 
         return(
-            <Table head={Header} type="default" dbData={getData} />
+            <Table
+                tableHeaders={HEADERS}
+                type="default"
+                tableData={getData} />
         )
 }
