@@ -187,6 +187,12 @@ body{
   overflow-y: scroll;
 }
 
+.defaultContainer {
+  padding-top: .5rem;
+  width: 100%;
+  height: calc(100vh - 12.5rem);
+}
+
 .btn-Layout{
   display: flex;
   align-items: center;

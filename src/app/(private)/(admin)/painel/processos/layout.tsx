@@ -15,7 +15,7 @@ function AdmLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
         <Header pageDefault='/painel/processos' section='PROCESSOS'  nav={navbar}/>
-        <section className="childSection">
+        <section className="defaultContainer">
           {children}
         </section>
       </>

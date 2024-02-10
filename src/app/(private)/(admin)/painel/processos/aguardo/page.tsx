@@ -13,7 +13,7 @@ const Header: Array<string> = ['Processo','Matéria','Cliente','Categoria','Praz
 
 
 export default async function WaitingProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes',                 
+    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes?withUser=true&withCategory=true',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -21,7 +21,6 @@ export default async function WaitingProcess(){
                     },
                 })
                 .then(responde=>{
-
                     return responde.data
                 })
                 .catch(error=>{
@@ -61,7 +60,11 @@ export default async function WaitingProcess(){
                     return []
                 })
 
-        return(
-            <Table head={Header} type='waiting' dbLawyer={getLawyers} dbCategory={getCategories} dbData={getData}/>
+        return (
+            <Table
+                tableHeaders={Header}
+                type="awaiting"
+                tableData={getData}
+            />
         )
 }

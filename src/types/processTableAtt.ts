@@ -1,4 +1,5 @@
 export type processProps = {
+    createdAt: string
     id: number,
     processKey: string,
     matter: string,
@@ -11,4 +12,6 @@ export type processProps = {
     status: string
     categoryId: number
     legalOpinion: string
+    user?: any
+    category?: any
 }

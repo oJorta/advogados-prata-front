@@ -26,12 +26,11 @@ export default function Hub(){
     useEffect(() => {
         const getData = async () => {
             const { data } = await axios.get(
-                'http://localhost:3333/api/processes',
+                'http://localhost:3333/api/processes?withUser=true&withCategory=true',
                 {
                     withCredentials: true,
                 }
             )
-            console.log(data)
             setProcess(data)
             setNearDeadlineProcesses(
                 data.filter((process: processProps) => dateIsNear(process.deadline) && (process.status !== 'Concluído'))
@@ -110,7 +109,7 @@ export default function Hub(){
             case 'monthly':
                 axios
                     .get(
-                        `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","removeLawyers":"false"}`,
+                        `http://localhost:3333/api/processes-report?filters={"sort":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","withUser":"false"}`,
                         {
                             withCredentials: true,
                             responseType: 'arraybuffer',
@@ -132,7 +131,7 @@ export default function Hub(){
             case 'trimestral':
                 axios
                     .get(
-                        `http://localhost:3333/api/processes-report?filters={"orderBy":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","removeLawyers":"false"}`,
+                        `http://localhost:3333/api/processes-report?filters={"sort":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","withUser":"false"}`,
                         {
                             withCredentials: true,
                             responseType: 'arraybuffer',
@@ -178,10 +177,10 @@ export default function Hub(){
                                 {nearDeadlineProcesses.map((process) => (
                                     <tr key={process.id}>
                                         <td className={styles.td}>{process.processKey}</td>
-                                        <td className={styles.td}>{process.materia}</td>
+                                        <td className={styles.td}>{process.matter}</td>
                                         <td className={styles.td}>{process.name}</td>
-                                        <td className={styles.td}>{process.userId}</td>
-                                        <td className={styles.td}>{process.categoryId}</td>
+                                        <td className={styles.td}>{process.user?.name}</td>
+                                        <td className={styles.td}>{process.category?.name}</td>
                                         <td
                                             className={styles.td}
                                             onClick={() => push(`/processo/${process.id}`)}
@@ -222,10 +221,10 @@ export default function Hub(){
                                 {awaitingReturnProcesses.map((process) => (
                                     <tr key={process.id}>
                                         <td className={styles.td}>{process.processKey}</td>
-                                        <td className={styles.td}>{process.materia}</td>
+                                        <td className={styles.td}>{process.matter}</td>
                                         <td className={styles.td}>{process.name}</td>
-                                        <td className={styles.td}>{process.userId}</td>
-                                        <td className={styles.td}>{process.categoryId}</td>
+                                        <td className={styles.td}>{process.user?.name}</td>
+                                        <td className={styles.td}>{process.category?.name}</td>
                                         <td
                                             className={styles.td}
                                             onClick={() => push(`/processo/${process.id}`)}
@@ -274,10 +273,10 @@ export default function Hub(){
                                 {recentlyConcludedProcesses.map((process) => (
                                     <tr key={process.id}>
                                         <td className={styles.td}>{process.processKey}</td>
-                                        <td className={styles.td}>{process.materia}</td>
+                                        <td className={styles.td}>{process.matter}</td>
                                         <td className={styles.td}>{process.name}</td>
-                                        <td className={styles.td}>{process.userId}</td>
-                                        <td className={styles.td}>{process.categoryId}</td>
+                                        <td className={styles.td}>{process.user?.name}</td>
+                                        <td className={styles.td}>{process.category?.name}</td>
                                         <td
                                             className={styles.td}
                                             onClick={() => push(`/processo/${process.id}`)}

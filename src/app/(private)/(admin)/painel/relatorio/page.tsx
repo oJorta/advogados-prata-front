@@ -13,7 +13,7 @@ import { BsFilter } from 'react-icons/bs'
 //types
 import { inputError } from '@/types/inputError'
 import { filter } from '@/types/filter'
-import { Status, orderBy } from '@/types/enums'
+import { Status, sort } from '@/types/enums'
 
 //Components
 import InputError from '@/components/input (Error)'
@@ -46,42 +46,41 @@ export default function Relatorio(){
     },[])
 
     const formReport = z.object({
-        orderBy: z.string().nonempty('Obrigatório a seleção de uma ordenação'),
-        beginningPeriod: z.coerce.date(),
-        endPeriod: z.coerce.date(),
+        sort: z.string().nonempty('Obrigatório a seleção de uma ordenação'),
+        beginningDistributionDate: z.coerce.date(),
+        endDistributionDate: z.coerce.date(),
         matter: z.string().nonempty('Selecionar uma Opção'),
-        categoryId: z.number().nonnegative('Selecionar uma Opção'),
+        category: z.number().nonnegative('Selecionar uma Opção'),
         name: z.string().nonempty('Selecionar uma Opção'),
-        userId: z.number().nonnegative('Selecionar uma Opção'),
+        user: z.number().nonnegative('Selecionar uma Opção'),
         status:z.string().nonempty('Selecionar uma Opção'),
-        removeLawyers: z.string().nonempty('Selecione uma Opção'),
+        withUser: z.string().nonempty('Selecione uma Opção'),
     })
 
     type credentialInputs = z.infer< typeof formReport>
 
-    
     const [inputReport, setInputReport] = useState<credentialInputs>({
-        orderBy: '',
-        beginningPeriod:new Date(),
-        endPeriod:new Date(),
+        sort: '',
+        beginningDistributionDate:new Date(),
+        endDistributionDate:new Date(),
         matter: 'None',
-        categoryId: 0,
+        category: 0,
         name: 'None',
-        userId: 0,
+        user: 0,
         status: 'None',
-        removeLawyers: 'false',
+        withUser: 'true',
     })
     
     const [inputError, setInputError] = useState<inputError>({
-        orderBy: {error: false, onFocus: false, textError:''},
-        beginningPeriod: {error: false, onFocus: false, textError:''},
-        endPeriod: {error: false, onFocus: false, textError:''},
+        sort: {error: false, onFocus: false, textError:''},
+        beginningDistributionDate: {error: false, onFocus: false, textError:''},
+        endDistributionDate: {error: false, onFocus: false, textError:''},
         matter: {error: false, onFocus: false, textError:''},
-        categoryId: {error: false, onFocus: false, textError:''},
+        category: {error: false, onFocus: false, textError:''},
         name: {error: false, onFocus: false, textError:''},
-        userId: {error: false, onFocus: false, textError:''},
+        user: {error: false, onFocus: false, textError:''},
         status: {error: false, onFocus: false, textError:''},
-        removeLawyers: {error: false, onFocus: false, textError:''}
+        withUser: {error: false, onFocus: false, textError:''}
     })
 
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>){
@@ -162,14 +161,14 @@ export default function Relatorio(){
                                 onFocus={() =>
                                     setInputError({
                                         ...inputError,
-                                        beginningPeriod: {
+                                        beginningDistributionDate: {
                                             error: false,
                                             onFocus: true,
                                             textError: '',
                                         },
                                     })
                                 }
-                                value={inputReport.beginningPeriod
+                                value={inputReport.beginningDistributionDate
                                     .toISOString()
                                     .substring(0, 10)}
                                 onChange={(
@@ -178,25 +177,25 @@ export default function Relatorio(){
                                     if (el.currentTarget.value === '') {
                                         setInputReport({
                                             ...inputReport,
-                                            beginningPeriod: new Date(),
+                                            beginningDistributionDate: new Date(),
                                         })
                                     } else {
                                         setInputReport({
                                             ...inputReport,
-                                            beginningPeriod: new Date(
+                                            beginningDistributionDate: new Date(
                                                 el.currentTarget.value
                                             ),
                                         })
                                     }
                                 }}
                                 style={addStyle(
-                                    inputError.beginningPeriod.error
+                                    inputError.beginningDistributionDate.error
                                 )}
                             />
 
-                            {inputError.beginningPeriod.error && (
+                            {inputError.beginningDistributionDate.error && (
                                 <InputError
-                                    text={inputError.beginningPeriod.textError}
+                                    text={inputError.beginningDistributionDate.textError}
                                     style={true}
                                 />
                             )}
@@ -209,14 +208,14 @@ export default function Relatorio(){
                                 onFocus={() =>
                                     setInputError({
                                         ...inputError,
-                                        endPeriod: {
+                                        endDistributionDate: {
                                             error: false,
                                             onFocus: true,
                                             textError: '',
                                         },
                                     })
                                 }
-                                value={inputReport.endPeriod
+                                value={inputReport.endDistributionDate
                                     .toISOString()
                                     .substring(0, 10)}
                                 onChange={(
@@ -225,31 +224,31 @@ export default function Relatorio(){
                                     if (el.currentTarget.value === '') {
                                         setInputReport({
                                             ...inputReport,
-                                            endPeriod: new Date(),
+                                            endDistributionDate: new Date(),
                                         })
                                     } else {
                                         setInputReport({
                                             ...inputReport,
-                                            endPeriod: new Date(
+                                            endDistributionDate: new Date(
                                                 el.currentTarget.value
                                             ),
                                         })
                                     }
                                 }}
-                                style={addStyle(inputError.endPeriod.error)}
+                                style={addStyle(inputError.endDistributionDate.error)}
                             />
 
-                            {inputError.endPeriod.error && (
+                            {inputError.endDistributionDate.error && (
                                 <InputError
-                                    text={inputError.endPeriod.textError}
+                                    text={inputError.endDistributionDate.textError}
                                     style={true}
                                 />
                             )}
                         </label>
                     </div>
-                    {inputError.endPeriod.error && (
+                    {inputError.endDistributionDate.error && (
                         <InputError
-                            text={inputError.endPeriod.textError}
+                            text={inputError.endDistributionDate.textError}
                             style={true}
                         />
                     )}
@@ -262,40 +261,40 @@ export default function Relatorio(){
                             onFocus={() =>
                                 setInputError({
                                     ...inputError,
-                                    orderBy: {
+                                    sort: {
                                         error: false,
                                         onFocus: true,
                                         textError: '',
                                     },
                                 })
                             }
-                            value={inputReport.orderBy}
+                            value={inputReport.sort}
                             onChange={(
                                 el: React.FormEvent<HTMLSelectElement>
                             ) => {
                                 setInputReport({
                                     ...inputReport,
-                                    orderBy: el.currentTarget.value,
+                                    sort: el.currentTarget.value,
                                 })
                             }}
-                            style={addStyle(inputError.orderBy.error)}
+                            style={addStyle(inputError.sort.error)}
                         >
                             <option value="">Selecione uma ordem</option>
-                            <option value={orderBy.Lawyer}>Advogado</option>
-                            <option value={orderBy.Client}>Cliente</option>
-                            <option value={orderBy.Deadline}>Prazo</option>
-                            <option value={orderBy.DistributionDate}>
+                            <option value={sort.Lawyer}>Advogado</option>
+                            <option value={sort.Client}>Cliente</option>
+                            <option value={sort.Deadline}>Prazo</option>
+                            <option value={sort.DistributionDate}>
                                 Data de Início
                             </option>
-                            <option value={orderBy.ConclusionDate}>
+                            <option value={sort.ConclusionDate}>
                                 Data de Conclusão
                             </option>
-                            <option value={orderBy.Category}>Categoria</option>
+                            <option value={sort.Category}>Categoria</option>
                         </select>
                     </label>
-                    {inputError.orderBy.error && (
+                    {inputError.sort.error && (
                         <InputError
-                            text={inputError.orderBy.textError}
+                            text={inputError.sort.textError}
                             style={false}
                         />
                     )}
@@ -310,9 +309,9 @@ export default function Relatorio(){
                                 type="radio"
                                 name="role"
                                 id="yes"
-                                value="false"
-                                checked={inputReport.removeLawyers === 'false'}
-                                onChange={(el: React.ChangeEvent<HTMLInputElement>) => setInputReport({...inputReport, removeLawyers: el.currentTarget.value})}
+                                value="true"
+                                checked={inputReport.withUser === 'true'}
+                                onChange={(el: React.ChangeEvent<HTMLInputElement>) => setInputReport({...inputReport, withUser: el.currentTarget.value})}
                             />
                             Sim
                         </label>
@@ -321,24 +320,24 @@ export default function Relatorio(){
                                 type="radio"
                                 name="role"
                                 id="no"
-                                value="true"
-                                checked={inputReport.removeLawyers === 'true'}
-                                onChange={(el: React.ChangeEvent<HTMLInputElement>) => setInputReport({...inputReport, removeLawyers: el.currentTarget.value})}
+                                value="false"
+                                checked={inputReport.withUser === 'false'}
+                                onChange={(el: React.ChangeEvent<HTMLInputElement>) => setInputReport({...inputReport, withUser: el.currentTarget.value})}
                             />
                             Não
                         </label>
                     </div>
                     {/* <select 
-                        onFocus={()=>setInputError({... inputError, removeLawyers:{error: false, onFocus: true, textError: ''}})}
+                        onFocus={()=>setInputError({... inputError, withUser:{error: false, onFocus: true, textError: ''}})}
 
-                        value={inputReport.removeLawyers} onChange={(el : React.FormEvent<HTMLSelectElement>)=>{
-                            setInputReport({... inputReport, removeLawyers: el.currentTarget.value})
+                        value={inputReport.withUser} onChange={(el : React.FormEvent<HTMLSelectElement>)=>{
+                            setInputReport({... inputReport, withUser: el.currentTarget.value})
                         }}
-                        style={addStyle(inputError.removeLawyers.error)}>
+                        style={addStyle(inputError.withUser.error)}>
                             <option value=''>Selecione uma opção</option>
                             <option value='false'>Sim</option>
                             <option value='true'>Não</option>
-                        {inputError.removeLawyers.error && <InputError text={inputError.removeLawyers.textError} style={false} />}
+                        {inputError.withUser.error && <InputError text={inputError.withUser.textError} style={false} />}
                         </select> */}
                 </div>
 
@@ -355,23 +354,23 @@ export default function Relatorio(){
                                 onFocus={() =>
                                     setInputError({
                                         ...inputError,
-                                        userId: {
+                                        user: {
                                             error: false,
                                             onFocus: true,
                                             textError: '',
                                         },
                                     })
                                 }
-                                value={inputReport.userId}
+                                value={inputReport.user}
                                 onChange={(
                                     el: React.FormEvent<HTMLSelectElement>
                                 ) => {
                                     setInputReport({
                                         ...inputReport,
-                                        userId: Number(el.currentTarget.value),
+                                        user: Number(el.currentTarget.value),
                                     })
                                 }}
-                                style={addStyle(inputError.userId.error)}
+                                style={addStyle(inputError.user.error)}
                             >
                                 <option value={-1}>
                                     Selecione um Advogado
@@ -388,9 +387,9 @@ export default function Relatorio(){
                                 })}
                             </select>
                         </label>
-                        {inputError.userId.error && (
+                        {inputError.user.error && (
                             <InputError
-                                text={inputError.userId.textError}
+                                text={inputError.user.textError}
                                 style={false}
                             />
                         )}
@@ -403,25 +402,25 @@ export default function Relatorio(){
                                 onFocus={() =>
                                     setInputError({
                                         ...inputError,
-                                        categoryId: {
+                                        category: {
                                             error: false,
                                             onFocus: true,
                                             textError: '',
                                         },
                                     })
                                 }
-                                value={inputReport.categoryId}
+                                value={inputReport.category}
                                 onChange={(
                                     el: React.FormEvent<HTMLSelectElement>
                                 ) => {
                                     setInputReport({
                                         ...inputReport,
-                                        categoryId: Number(
+                                        category: Number(
                                             el.currentTarget.value
                                         ),
                                     })
                                 }}
-                                style={addStyle(inputError.categoryId.error)}
+                                style={addStyle(inputError.category.error)}
                             >
                                 <option value={-1}>
                                     Selecione uma Categoria
@@ -438,9 +437,9 @@ export default function Relatorio(){
                                 })}
                             </select>
                         </label>
-                        {inputError.categoryId.error && (
+                        {inputError.category.error && (
                             <InputError
-                                text={inputError.categoryId.textError}
+                                text={inputError.category.textError}
                                 style={false}
                             />
                         )}

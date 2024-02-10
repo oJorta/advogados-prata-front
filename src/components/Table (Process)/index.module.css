@@ -281,3 +281,198 @@
         gap: 0.5rem;
     }
 }
+
+
+
+
+
+.container {
+    width: 100%;
+    height: calc(100vh - 5rem);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2rem;
+}
+
+.sectionContainer {
+    width: 100%;
+    display: flex;
+}
+
+.sectionContainer:nth-of-type(1) {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionContainer:nth-of-type(2) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.sectionContainer:nth-of-type(3) {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.optionsContainer {
+    display: flex;
+    gap: .5rem;
+    margin-left: 5% ;
+}
+
+.optionsContainer button {
+    padding: .5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--bg-apWhite);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.table, .th, .td {
+    border-collapse: collapse;
+    padding: .2rem 1rem;
+    text-align: left;
+}
+
+.th:first-of-type {
+    margin-left: .5rem;
+}
+
+.table thead{
+    border-bottom: 2px solid #000;
+}
+
+.table tbody tr {
+    --delay: .1s;
+    transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+
+.table {
+    width: 100%;
+}
+
+.tableContainer {
+    width: 90%;
+    height: calc(100vh - 210px);
+    margin: 0 auto;
+}
+
+.tableHeader {
+    width: 100%;
+    height: 24px;
+    
+}
+
+.tableBody {
+    width: 100%;
+    height: max-content;
+    max-height: 100%;
+    background-color: #F2F2F2;
+    margin: .8rem auto;
+    overflow: scroll;
+}
+
+.tableBody,
+.monthlyInfoContainer {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.tableBody::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.tableBody::-webkit-scrollbar-thumb {
+    background-color: #0004;
+    border-radius: 5px;
+    visibility: hidden;
+}
+
+.tableBody:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+.tableBody::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.tableBody::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.tableBody tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+.th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #F2F2F2;
+    text-transform: uppercase;
+}
+
+.td:last-of-type {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+}
+
+.icon {
+    display: flex;
+    /* margin: 0 auto; */
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.monthlyInfoContainer {
+    width: 100%;
+    height: 216px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #F2F2F2;
+    margin: .8rem auto;
+    overflow: auto;
+    padding: .2rem 1rem;
+}
+
+.monthlyInfoContainer p {
+    text-transform: uppercase;
+}
+
+
+.smallTableContainer {
+    width: 50%;
+}
+
+.reportShortcutButton {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem;
+    background: none;
+    border: 2px solid #000;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.reportShortcutButton svg {
+    width: 24px;
+    height: 24px;
+}
+
+.reportShortcutButton:hover {
+    background-color: #e3e3e3;
+    transition: 0.3s;
+}

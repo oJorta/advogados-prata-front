@@ -17,7 +17,7 @@ export enum isUrgent {
     nao = 0
 }
 
-export enum orderBy {
+export enum sort {
     Lawyer = 'lawyer',
     Client = 'client',
     Deadline = 'deadline',

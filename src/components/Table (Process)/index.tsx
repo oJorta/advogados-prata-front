@@ -5,7 +5,7 @@ import styles from './index.module.css'
 import toast from 'react-hot-toast'
 
 //Icons
-import { AiOutlineSearch, AiOutlineComment, AiOutlineEdit } from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineComment, AiOutlineEdit, AiFillBell } from 'react-icons/ai'
 import { RiDeleteBin6Fill, RiCheckboxCircleLine } from 'react-icons/ri'
 import { MdOutlineSelectAll, MdOutlineDeselect } from 'react-icons/md'
 
@@ -24,33 +24,40 @@ import ModalFree from '../Modal (Free)'
 import { IdforName } from '@/functions/filter'
 import { isEmptyObj } from '@/functions/isEmpty'
 import { pathnameStatus, pathnames } from '@/functions/status'
+import getStatusStyle from '@/functions/getProcessStatusStyle'
 
 type tableProps = {
-    head: Array<string>,
+    tableHeaders: Array<string>,
     type: string,
-    dbData: Array<processProps>,
-    dbLawyer: Array<lawyerUser>,
-    dbCategory: Array<categoryUser>
+    tableData: Array<processProps>
 }
 
-export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}: tableProps){
+export default function ProcessTable({tableHeaders, type, tableData}: tableProps){
     const pathname = usePathname()
     const [query, setQuery] = useState<string>('')
-    const [data, setData] = useState<Array<processProps>>(dbData)
+    const [data, setData] = useState<Array<processProps>>(tableData)
     const [trash, setTrash] = useState<trash>({})
     const [openModalDel, setOpenModalDel] = useState<stateModal>({open: false, id: []})
     const [openModalFree, setOpenModalFree] = useState<stateModal>({open: false, id: []})
     const { push } = useRouter()
 
+    useEffect(() => {
+        filterTable(type)
+        console.log(data)
+    }, [])
+
     useEffect(()=>{
-        if(query === ''){
-            setData(dbData)
+        if(query !== ''){
+            setData(data.filter((row) => row.processKey.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())))
+        }
+        /* if(query === ''){
+            setData(tableData)
         }
         else{
-            setData(dbData.filter((row) => row.processKey.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())))
-        }
+            setData(tableData.filter((row) => row.processKey.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())))
+        } */
 
-    }, [query, dbData])
+    }, [query])
 
     function selectedProcess(el: React.ChangeEvent<HTMLInputElement>){
 
@@ -65,7 +72,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
 
 //  Funções para os botões     
 
-    function selectAllFunctions(el: React.MouseEvent<HTMLButtonElement>){
+    function selectAllProcesses(el: React.MouseEvent<HTMLButtonElement>){
         let ids: number[] = []
         if(isEmptyObj(trash)){
             data.map(row=>{
@@ -120,15 +127,67 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
     
     function setInclusion(date: string){
         if(parseInt(date.substring(5, 7)) <= parseInt(new Date().toISOString().substring(5, 7))){
-            return `hà ${parseInt(new Date().toISOString().substring(8, 10)) - parseInt(date.substring(8, 10))} dia(s)`
+            return `há ${parseInt(new Date().toISOString().substring(8, 10)) - parseInt(date.substring(8, 10))} dia(s)`
         }
         else{
-            return `hà ${parseInt(new Date().toISOString().substring(5, 7)) - parseInt(date.substring(5, 7))} meses(s)`
+            return `há ${parseInt(new Date().toISOString().substring(5, 7)) - parseInt(date.substring(5, 7))} meses(s)`
         }
     }
 
-    function typeTable(type: string, col: processProps){
-        console.log(col)
+    function getCollumnValue(process: processProps, header: string) {
+        switch(header) {
+            case 'Processo':
+                return process.processKey || '--'
+            case 'Matéria':
+                return process.matter || '--'
+            case 'Cliente':
+                return process.name || '--'
+            case 'Advogado':
+                return process.user?.name || '--'
+            case 'Categoria':
+                return process.category?.name || '--'
+            case 'Prazo':
+                return process.deadline || '--'
+            case 'Conclusão':
+                return process.conclusionDate || '--'
+            case 'Status':
+                return process.status || '--'
+            default:
+                return '--'
+        }
+    }
+
+    function getCollumnElement(process: processProps, header: string) {
+        switch(header) {
+            case 'Status':
+                return (
+                    <td
+                        className={styles.td}
+                        style={getStatusStyle(process.status)}
+                    >
+                        {process.status}
+                    </td>
+                )
+            case 'Inclusão':
+                return (
+                    <td
+                        className={styles.td}
+                    >
+                        {setInclusion(process.distributionDate)}
+                    </td>
+                )
+            default:
+                return (
+                    <td
+                        className={styles.td}
+                    >
+                        {getCollumnValue(process, header)}
+                    </td>
+                )
+        }
+    }
+
+    /* function typeTable(type: string, col: processProps){
         switch(type){
             case 'default':
             if(col.status != 'Em aguardo' && col.status != 'Concluído'){
@@ -242,15 +301,133 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                     return null
                 }
         }
+    } */
+
+    function filterTable(type: string) {
+        switch(type) {
+            case 'awaiting':
+                setData(tableData.filter((process) => process.status === 'Em aguardo'))
+                break
+            case 'complete':
+                setData(tableData.filter((process) => process.status === 'Concluído'))
+                break
+            default:
+                setData(tableData.filter((process) => process.status !== 'Concluído' && process.status !== 'Em aguardo'))
+                break
+        }
     }
 
-    return(
+    return (
         <>
+            <ModalDel isOpen={openModalDel} setOpen={setOpenModalDel}/>
+            <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree}/>
+            <div className={styles.optionsContainer}>
+                {pathname === '/painel/processos/aguardo' && (
+                    <button
+                        className={styles.freeBtn}
+                        onClick={freeFunction}
+                    >
+                        <RiCheckboxCircleLine />
+                    </button>
+                )}
+                <button
+                    className={styles.deleteBtn}
+                    onClick={deleteFunction}
+                >
+                    <RiDeleteBin6Fill />
+                </button>
+            </div>
+            <div className={styles.tableContainer}>
+                <section className={styles.tableBody}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th className={styles.th}>
+                                    <input
+                                        type="checkbox"
+                                        onClick={selectAllProcesses}
+                                        {...(isEmptyObj(trash) && {checked: false})}
+                                        style={{ width: '1rem', height: '1rem' }}
+                                    />
+                                </th>
+                                {tableHeaders.map((th, index) => (
+                                    <th
+                                        key={index}
+                                        className={styles.th}
+                                    >
+                                        {th}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {data.map((process) => {
+                                return (
+                                    <tr key={process.id}>
+                                        <td className={styles.td}>
+                                            <input
+                                                value={process.id}
+                                                onChange={selectedProcess}
+                                                type="checkbox"
+                                                style={{
+                                                    width: '1rem',
+                                                    height: '1rem',
+                                                }}
+                                                checked={
+                                                    !trash[
+                                                        process.id.toString()
+                                                    ]
+                                                        ? false
+                                                        : true
+                                                }
+                                            />
+                                        </td>
+                                        {tableHeaders.map((key, index) => {
+                                            return (
+                                                <>
+                                                    {getCollumnElement(
+                                                        process,
+                                                        key
+                                                    )}
+                                                </>
+                                            )
+                                        })}
+                                        <td className={styles.td}>
+                                            <AiOutlineComment
+                                                className={styles.icon}
+                                                onClick={() =>
+                                                    push(
+                                                        `/processo/${process.id}`
+                                                    )
+                                                }
+                                            />
+                                            {type !== 'complete' && (
+                                                <AiOutlineEdit
+                                                    className={styles.icon}
+                                                    onClick={() =>
+                                                        push(
+                                                            `/painel/processos/${process.id}`
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </>
+    )
+    {/* <>
         <ModalDel isOpen={openModalDel} setOpen={setOpenModalDel}/>
         <ModalFree isOpen={openModalFree} setOpen={setOpenModalFree}/>
         <section className={styles.containerProcess}>
             <div className={styles.backgroundTrash}>
-                <button className={styles.selectAllBtn} onClick={selectAllFunctions}>
+                <button className={styles.selectAllBtn} onClick={selectAllProcesses}>
                     {!isEmptyObj(trash) ?
                     <MdOutlineDeselect />
                     :
@@ -271,7 +448,7 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                 <header className={styles.headerTable}>
                     <div style={{width: '2rem'}}></div>
                     <ul className={styles.titleCol}>
-                        {head.map((li, index)=>{
+                        {tableHeaders.map((li, index)=>{
                             return <span key={index}><strong>{li}</strong></span>
                         })}
                     <label htmlFor='searchInput' className={styles.tableSearch}>
@@ -290,6 +467,5 @@ export default function ProcessTable({head, type, dbData, dbLawyer, dbCategory}:
                 </div>
             </div>
         </section>
-        </>
-    )
+        </> */}
 }

@@ -9,11 +9,10 @@ import Table from "@/components/Table (Process)"
 import { processProps } from "@/types/processTableAtt"
 import { categoryUser, lawyerUser } from "@/types/atributes"
 
-const Header: Array<string> = ['Processo','Matéria','Cliente','Advogado','Categoria','Prazo','Status']
-
+const HEADERS = [ 'Processo', 'Matéria', 'Cliente', 'Advogado', 'Categoria', 'Prazo', 'Status' ]
 
 export default async function DefaultProcess(){
-    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes',                 
+    const getData: processProps[] = await axios.get('http://localhost:3333/api/processes?withUser=true&withCategory=true',                 
                 {
                     headers: {
                         Authorization: `Bearer ${cookies().get('accessToken')?.value}`,
@@ -59,7 +58,11 @@ export default async function DefaultProcess(){
                     return []
                 })
 
-        return(
-            <Table head={Header} type="default" dbLawyer={getLawyers} dbCategory={getCategories} dbData={getData}/>
+        return (
+            <Table
+                tableHeaders={HEADERS}
+                type="default"
+                tableData={getData}
+            />
         )
 }
