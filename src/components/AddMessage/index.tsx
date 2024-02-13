@@ -98,7 +98,7 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                                 let newFile = new File([file], fileName, { type: file.type })
 
                                 try {
-                                    await axios.post('http://localhost:3333/api/revision-response-documents', {
+                                    await axios.post('http://localhost:3333/api/revision-response-document', {
                                         file: newFile,
                                         revisionResponseId: revisionResponseId
                                     },
@@ -154,9 +154,8 @@ export default function AddMessage({ setOpen, chatHistory }: any) {
                     for (const file of files) {
                         let fileName = file.name.replace(/[^a-zA-Z0-9._ ]/g, '')
                         let newFile = new File([file], fileName, { type: file.type })
-
                         try {
-                            await axios.post('http://localhost:3333/api/revision-request-documents', {
+                            await axios.post('http://localhost:3333/api/revision-request-document', {
                                 file: newFile,
                                 revisionRequestId: revisionRequestId
                             },

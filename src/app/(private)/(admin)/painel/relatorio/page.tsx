@@ -100,19 +100,22 @@ export default function Relatorio(){
         }
         else{
 
-            let query: string = ''
-            for( let arg in validation.data){
+            let query: string = ''/* 
+            if(Object.keys(validation.data) && Object.keys(validation.data))
+                query += '?' */
+
+            for(let arg in validation.data){
                 const keys = Object.keys(validation.data)
                 const values = Object.values(validation.data)
-                
+
                 if(values.at(keys.indexOf(arg)) != 'None' && values.at(keys.indexOf(arg)) != 0){
-                    query += outputFilter( arg, values, keys)
+                    query += outputFilter(arg, values, keys)
                 }
             }
-        
-            console.log(query)
-            /* console.log(`http://localhost:3333/api/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`) */
-            axios.get(`http://localhost:3333/api/processes-report?filters={${query.substring(0, query.length-1).concat('}')}`,
+
+            console.log(`http://localhost:3333/api/processes-report?${query.substring(0, query.length-1)}`)
+
+            axios.get(`http://localhost:3333/api/processes-report?${query.substring(0, query.length-1)}`,
             {
                 withCredentials: true,
                 headers:{

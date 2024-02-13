@@ -4,5 +4,5 @@ export type monthlyProcessReport = {
     waiting: number,
     completed: number,
     averagePerLawyer: number,
-    categories: string,
+    openProcesses: number,
 }

@@ -25,41 +25,48 @@ export default function Hub(){
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios.get(
+            const processes = await axios.get(
                 'http://localhost:3333/api/processes?withUser=true&withCategory=true',
                 {
                     withCredentials: true,
                 }
             )
-            setProcess(data)
+            const lawyers = await axios.get(
+                'http://localhost:3333/api/users?role=lawyer',
+                {
+                    withCredentials: true,
+                }
+            )
+            console.log(lawyers.data)
+            setProcess(processes.data)
             setNearDeadlineProcesses(
-                data.filter((process: processProps) => dateIsNear(process.deadline) && (process.status !== 'Concluído'))
+                processes.data.filter((process: processProps) => dateIsNear(process.deadline) && (process.status !== 'Concluído'))
             )
             setRecentlyConcludedProcesses(
-                data.filter((process: processProps) => dateIsNear(process.conclusionDate, 'conclusionDate') && (process.status === 'Concluído'))
+                processes.data.filter((process: processProps) => dateIsNear(process.conclusionDate, 'conclusionDate') && (process.status === 'Concluído'))
             )
             setAwaitingReturnProcesses(
-                data.filter((process: processProps) => process.status === 'Aguardando retorno')
-            )
+                processes.data.filter((process: processProps) => process.status === 'Aguardando retorno')
+            )   
             setMonthlyProcessReport({
-                total: data.filter((process: { distributionDate: string | number | Date }) => {
+                total: processes.data.filter((process: { distributionDate: string | number | Date }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth()
-                }
+                )
                 ).length,
-                inProgress: data.filter((process: { distributionDate: string | number | Date; status: string }) => (
+                inProgress: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Em inicialização'
                 )).length,
-                waiting: data.filter((process: { distributionDate: string | number | Date; status: string }) => (
+                waiting: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Aguardando retorno'
                 )).length,
-                completed: data.filter((process: { distributionDate: string | number | Date; status: string }) => (
+                completed: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Concluído'
                 )).length,
-                averagePerLawyer: 0,
-                categories: Array.from(new Set(data.map((process: { categoryId: any }) => process.categoryId))).join(', ')
+                averagePerLawyer: monthlyProcessReport.inProgress / lawyers.data.length,
+                openProcesses: monthlyProcessReport.inProgress + monthlyProcessReport.waiting,
             })
         }
         
@@ -109,7 +116,7 @@ export default function Hub(){
             case 'monthly':
                 axios
                     .get(
-                        `http://localhost:3333/api/processes-report?filters={"sort":"lawyer","beginningPeriod":"${month.firstDate}","endPeriod":"${month.lastDate}","withUser":"false"}`,
+                        `http://localhost:3333/api/processes-report?sort=category&beginningDistributionDate=${month.firstDate}&endDistributionDate=${month.lastDate}&withUser=true`,
                         {
                             withCredentials: true,
                             responseType: 'arraybuffer',
@@ -131,7 +138,7 @@ export default function Hub(){
             case 'trimestral':
                 axios
                     .get(
-                        `http://localhost:3333/api/processes-report?filters={"sort":"lawyer","beginningPeriod":"${trimester.firstDate}","endPeriod":"${trimester.lastDate}","withUser":"false"}`,
+                        `http://localhost:3333/api/processes-report?sort=user&beginningDistributionDate=${trimester.firstDate}&endDistributionDate=${trimester.lastDate}&withUser=true`,
                         {
                             withCredentials: true,
                             responseType: 'arraybuffer',
@@ -250,12 +257,11 @@ export default function Hub(){
                         <h1>REGISTRO MENSAL</h1>
                     </section>
                     <div className={styles.monthlyInfoContainer}>
-                        <p><strong>Processos desse mês:</strong> {monthlyProcessReport.total}</p>
-                        <p><strong>Processos em andamento:</strong> {monthlyProcessReport.inProgress}</p>
-                        <p><strong>Processos em aguardo:</strong> {monthlyProcessReport.waiting}</p>
-                        <p><strong>Processos concluídos este mês:</strong> {monthlyProcessReport.completed}</p>
-                        <p><strong>Média de processos por advogado:</strong> {monthlyProcessReport.averagePerLawyer}</p>
-                        <p><strong>Categorias dos processos deste mês:</strong> {monthlyProcessReport.categories}</p>
+                        <p><strong>Processos em andamento:</strong> {monthlyProcessReport.inProgress} processos</p>
+                        <p><strong>Processos em aguardo:</strong> {monthlyProcessReport.waiting} processos</p>
+                        <p><strong>Processos cadastrados esse mês:</strong> {monthlyProcessReport.total}</p>
+                        <p><strong>Processos concluídos este mês:</strong> {monthlyProcessReport.completed} processos | {monthlyProcessReport.openProcesses} RESTANTES</p>
+                        <p><strong>Média de processos por advogado:</strong> {monthlyProcessReport.averagePerLawyer} processos</p>
                     </div>
                 </div>
                 
