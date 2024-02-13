@@ -113,8 +113,6 @@ export default function Relatorio(){
                 }
             }
 
-            console.log(`http://localhost:3333/api/processes-report?${query.substring(0, query.length-1)}`)
-
             axios.get(`http://localhost:3333/api/processes-report?${query.substring(0, query.length-1)}`,
             {
                 withCredentials: true,

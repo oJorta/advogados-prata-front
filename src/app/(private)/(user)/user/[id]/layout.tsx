@@ -36,7 +36,7 @@ export default function UserLayout({ children, done, profile }: { children: Reac
         <section>
 
           <Header name="PROCESSOS" navLinks={navbar} page={page} setPage={setPage}/>
-          <section className="childSection">
+          <section className="defaultContainer">
             {pages[page]}
           </section>
 

@@ -37,7 +37,6 @@ export default function Hub(){
                     withCredentials: true,
                 }
             )
-            console.log(lawyers.data)
             setProcess(processes.data)
             setNearDeadlineProcesses(
                 processes.data.filter((process: processProps) => dateIsNear(process.deadline) && (process.status !== 'Concluído'))

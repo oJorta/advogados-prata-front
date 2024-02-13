@@ -358,7 +358,7 @@
 
 .tableContainer {
     width: 90%;
-    height: calc(100vh - 210px);
+    height: calc(100% - 5rem);
     margin: 0 auto;
 }
 
