@@ -50,28 +50,40 @@ export default function Hub(){
             setMonthlyProcessReport({
                 total: processes.data.filter((process: { distributionDate: string | number | Date }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth()
-                )
-                ).length,
+                )).length,
+
                 inProgress: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
-                    process.status === 'Em inicialização'
+                    process.status !== 'Concluído' && process.status !== 'Em aguardo'
                 )).length,
+
                 waiting: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Aguardando retorno'
                 )).length,
+
                 completed: processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Concluído'
                 )).length,
-                averagePerLawyer: (monthlyProcessReport.inProgress / lawyers.data.length).toFixed(2) as unknown as number,
-                openProcesses: monthlyProcessReport.inProgress + monthlyProcessReport.waiting,
+
+                averagePerLawyer:
+                ((processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
+                    new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
+                    process.status !== 'Concluído' && process.status !== 'Em aguardo'
+                )).length) / lawyers.data.length).toPrecision(2) as unknown as number,
+
+                openProcesses:
+                ((processes.data.filter((process: { distributionDate: string | number | Date }) => (
+                    new Date().getMonth() === new Date(process.distributionDate).getMonth()
+                )).length) - (processes.data.filter((process: { distributionDate: string | number | Date; status: string }) => (
+                    new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
+                    process.status === 'Concluído'
+                )).length)),
             })
         }
         
         getData()
-        
-        
     }, [])
 
     function dateIsNear(date: string, type: 'deadline' | 'conclusionDate' = 'deadline') {

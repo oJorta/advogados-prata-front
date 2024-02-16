@@ -1,11 +1,10 @@
 'use client'
 import {  useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import styles from './index.module.css'
-import toast from 'react-hot-toast'
 
 //Icons
-import { AiOutlineSearch, AiOutlineComment, AiOutlineEdit, AiFillBell } from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlineComment } from 'react-icons/ai'
 
 //Types
 import { processProps } from '@/types/processTableAtt'
@@ -13,7 +12,6 @@ import { SortBy } from '@/types/enums'
 
 //Functions
 import getStatusStyle from '@/functions/getProcessStatusStyle'
-import { useAuth } from '@/hooks/useAuth'
 
 type tableProps = {
     tableHeaders: Array<string>,
@@ -31,27 +29,8 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
     const { push } = useRouter()
 
     useEffect(() => {
-        filterData(tableData, type)
-        sortTable(sort.collumn, sort.order)
-    }, [])
-
-    useEffect(() => {
-        sortTable(sort.collumn, sort.order)
-    }, [sort])
-
-    useEffect(() => {
-        if (query === '') {
-            filterData(tableData, type)
-            sortTable(sort.collumn, sort.order)
-        } else {
-            const filteredData = tableData.filter((process) => {
-                return Object.values(process).some((value) => {
-                    return String(value).toLowerCase().includes(query.toLowerCase())
-                })
-            })
-            filterData(filteredData, type)
-        }
-    }, [query])
+        filterAndSortData(tableData)
+    }, [tableData, query, sort])
   
     function setInclusion(date: string){
         if(parseInt(date.substring(5, 7)) <= parseInt(new Date().toISOString().substring(5, 7))){
@@ -117,42 +96,53 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
         }
     }
 
-    function filterData(data: processProps[], type: string) {
+    function filterAndSortData(data: processProps[]) {
+        let filteredData: processProps[] = []
         switch(type) {
+            case 'awaiting':
+                filteredData = data.filter((process: { status: string }) => process.status === 'Em aguardo')
+                break
             case 'complete':
-                setData(data.filter((process: { status: string }) => process.status === 'Concluído'))
+                filteredData = data.filter((process: { status: string }) => process.status === 'Concluído')
                 break
             default:
-                setData(data.filter((process: { status: string }) => process.status !== 'Concluído' && process.status !== 'Em aguardo'))
+                filteredData = data.filter((process: { status: string }) => process.status !== 'Concluído' && process.status !== 'Em aguardo')
                 break
         }
-    }
 
-    function sortTable(sortBy: SortBy = SortBy.PRAZO, order: 'asc' | 'desc' = 'asc') {
-        setData((data) => data.sort((a, b) => {
+        if (query !== '') {
+            filteredData = filteredData.filter((process) =>
+                Object.values(process).some((value) =>
+                    String(value).toLowerCase().includes(query.toLowerCase())
+                )
+            )
+        }
+
+        const sortedData = filteredData.sort((a, b) => {
+            const sortBy = sort.collumn
+            const order = sort.order
+            console.log(sortBy)
             switch (sortBy) {
                 case 'deadline':
-                    /* a.deadline === null && b.processKey !== null && -1
-
-                    a.deadline !== null && b.processKey === null && 1 */
-
-                    if (order === 'asc') {
-                        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
-                    }
-                    return new Date(b.deadline).getTime() - new Date(a.deadline).getTime()
-                
+                    return order === 'asc' ?
+                        new Date(a.deadline).getTime() - new Date(b.deadline).getTime() :
+                        new Date(b.deadline).getTime() - new Date(a.deadline).getTime()
                 case 'lawyer':
-                    if (order === 'asc') {
-                        return String(a.user?.name).localeCompare(String(b.user?.name))
-                    }
-                    return String(b.user?.name).localeCompare(String(a.user?.name))
+                    return order === 'asc' ?
+                        String(a.user?.name).localeCompare(String(b.user?.name)) :
+                        String(b.user?.name).localeCompare(String(a.user?.name))
+                case 'category':
+                    return order === 'asc' ?
+                        String(a.category?.name).localeCompare(String(b.category?.name)) :
+                        String(b.category?.name).localeCompare(String(a.category?.name))
                 default:
-                    if (order === 'asc') {
-                        return String(a[sortBy as keyof processProps]).localeCompare(String(b[sortBy as keyof processProps]))
-                    }
-                    return String(b[sortBy as keyof processProps]).localeCompare(String(a[sortBy as keyof processProps]))
+                    return order === 'asc' ?
+                        String(a[sortBy as keyof processProps]).localeCompare(String(b[sortBy as keyof processProps])) :
+                        String(b[sortBy as keyof processProps]).localeCompare(String(a[sortBy as keyof processProps]))
             }
-        }))
+        })
+
+        setData(sortedData)
     }
 
     return (

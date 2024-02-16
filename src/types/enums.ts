@@ -28,10 +28,10 @@ export enum sort {
 
 export enum SortBy {
     PROCESSO = 'processKey',
-    MATERIA = 'matter',
+    MATÉRIA = 'matter',
     CLIENTE = 'name',
     ADVOGADO = 'lawyer',
-    CATEGORIA = 'categoryId',
+    CATEGORIA = 'category',
     PRAZO = 'deadline',
     CONCLUSÃO = 'conclusionDate',
     STATUS = 'status'
