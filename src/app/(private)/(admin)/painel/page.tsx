@@ -64,7 +64,7 @@ export default function Hub(){
                     new Date().getMonth() === new Date(process.distributionDate).getMonth() &&
                     process.status === 'Concluído'
                 )).length,
-                averagePerLawyer: monthlyProcessReport.inProgress / lawyers.data.length,
+                averagePerLawyer: (monthlyProcessReport.inProgress / lawyers.data.length).toFixed(2) as unknown as number,
                 openProcesses: monthlyProcessReport.inProgress + monthlyProcessReport.waiting,
             })
         }

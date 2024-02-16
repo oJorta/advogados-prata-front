@@ -107,6 +107,7 @@ export default function Processo() {
                             </>
                         )
                     })}
+                    
                     {process.status === 'Concluído' && (
                         <div className={styles.conclusionContainer}>
                             <h3>PARECER DO PROCESSO:</h3>

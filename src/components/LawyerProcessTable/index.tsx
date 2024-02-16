@@ -80,6 +80,8 @@ export default function ProcessTable({tableHeaders, type, tableData}: tableProps
                 return process.conclusionDate || '--'
             case 'Status':
                 return process.status || '--'
+            case 'Data':
+                return process.conclusionDate || '--'
             default:
                 return '--'
         }

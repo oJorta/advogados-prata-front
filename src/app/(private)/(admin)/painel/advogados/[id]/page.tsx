@@ -65,7 +65,7 @@ export default function AdvogadoID() {
             )
 
             const processes = await axios.get(
-                'http://localhost:3333/api/processes',
+                `http://localhost:3333/api/processes?user=${id}`,
                 {
                     withCredentials: true
                 }
@@ -546,24 +546,28 @@ export default function AdvogadoID() {
 
             {advogado.role === 'lawyer' && (
                 <div className={styles.processesContainer}>
-                <div className={styles.tableSelection}>
-                        <h3
-                            onClick={() => setSelectedTable('default')}
-                            {...selectedTable === 'default' && {style:{borderBottom: '3px solid #000'}}}
-                        >
-                            PROCESSOS EM ANDAMENTO
-                        </h3>
-                        <h3
-                            onClick={() => setSelectedTable('complete')}
-                            {...selectedTable === 'complete' && {style:{borderBottom: '3px solid #000'}}}
-                        >
-                            PROCESSOS CONCLUÍDOS
-                        </h3>
-                </div>
+                    <div className={styles.tableSelection}>
+                            <h3
+                                onClick={() => setSelectedTable('default')}
+                                {...selectedTable === 'default' && {style:{borderBottom: '3px solid #000'}}}
+                            >
+                                PROCESSOS EM ANDAMENTO
+                            </h3>
+                            <h3
+                                onClick={() => setSelectedTable('complete')}
+                                {...selectedTable === 'complete' && {style:{borderBottom: '3px solid #000'}}}
+                            >
+                                PROCESSOS CONCLUÍDOS
+                            </h3>
+                    </div>
 
-                <div className={styles.tableContainer}>
-                    <Table head={TABLEHEADER} type={selectedTable} dbData={processes} />
-                </div>
+                    <div className={styles.tableContainer}>
+                        <Table
+                            tableHeaders={TABLEHEADER}
+                            type={selectedTable}
+                            tableData={processes}
+                        />
+                    </div>
             </div>
             )}
         </div>
